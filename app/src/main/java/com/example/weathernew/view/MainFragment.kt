@@ -12,6 +12,7 @@ import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
 
@@ -43,9 +44,19 @@ class MainFragment : Fragment() {
 
     fun renderData(appState: AppState){
         when(appState){
-            is AppState.Error -> Toast.makeText(requireContext(),appState.error.message,Toast.LENGTH_SHORT).show()
-            is AppState.Loading -> Toast.makeText(requireContext(),"${appState.progress}",Toast.LENGTH_SHORT).show()
-            is AppState.Success -> Toast.makeText(requireContext(),appState.weatherData,Toast.LENGTH_SHORT).show()
+            is AppState.Error -> {
+                binding.loadingLayout.visibility = View.GONE
+                Snackbar.make(binding.mainView,"Ошибка",Snackbar.LENGTH_LONG).setAction("Попробовать ещё раз"){
+                    viewModel.getWeatherFromServer()
+                }.show()
+            }
+            is AppState.Loading ->{
+                binding.loadingLayout.visibility = View.VISIBLE
+            }
+            is AppState.Success -> {
+                binding.loadingLayout.visibility = View.VISIBLE
+                Snackbar.make(binding.mainView,"Успех",Snackbar.LENGTH_LONG).show()
+            }
         }
 
     }

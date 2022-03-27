@@ -3,6 +3,7 @@ package com.example.weathernew.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.lang.IllegalStateException
 import java.lang.Thread.sleep
 
 class MainViewModel(val liveData:MutableLiveData<AppState> = MutableLiveData()) : ViewModel() {
@@ -21,9 +22,15 @@ LifecycleOwner. Это позволяет не обновлять данные �
     fun getWeatherFromServer(){
         liveData.postValue(AppState.Loading(0))
         Thread{
+            sleep(1000)
 
-            sleep(3000)
-            liveData.postValue(AppState.Success("Холодно"))
+            val rand = (1..30).random()
+            if (rand>10){
+                liveData.postValue(AppState.Success("Успешно"))
+            }else{
+                liveData.postValue(AppState.Error(IllegalStateException("Ошибка")))
+            }
+
         }.start()
     }
 }
