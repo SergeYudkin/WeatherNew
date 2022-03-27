@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
+import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
@@ -36,12 +37,17 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)                                                   // инициализация viewModel
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)                       // ViewModelProvider следит что бы каждая viewModel существовала в единственном экземпляре
-         viewModel.getLivaData().observe(viewLifecycleOwner, Observer <Any> { renderData(it) })        // ViewModel автоматически воспринимает жизненный цикл и обрабатывает сохранение и восстановление данных
+         viewModel.getLivaData().observe(viewLifecycleOwner, Observer <AppState> { renderData(it) })        // ViewModel автоматически воспринимает жизненный цикл и обрабатывает сохранение и восстановление данных
         viewModel.getWeatherFromServer()
     }
 
-    fun renderData(data:Any){
-        Toast.makeText(requireContext(),"Работает", Toast.LENGTH_SHORT).show()
+    fun renderData(appState: AppState){
+        when(appState){
+            is AppState.Error -> Toast.makeText(requireContext(),appState.error.message,Toast.LENGTH_SHORT).show()
+            is AppState.Loading -> Toast.makeText(requireContext(),"${appState.progress}",Toast.LENGTH_SHORT).show()
+            is AppState.Success -> Toast.makeText(requireContext(),appState.weatherData,Toast.LENGTH_SHORT).show()
+        }
+
     }
 //-----------------------------------------------------------------------------------------
 
