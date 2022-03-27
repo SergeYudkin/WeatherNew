@@ -19,8 +19,9 @@ LifecycleOwner. Это позволяет не обновлять данные �
 //--------------------------------------------------------------------------------------
 
     fun getWeatherFromServer(){
+        liveData.postValue(AppState.Loading(0))
         Thread{
-            liveData.postValue(AppState.Loading(0))
+
             sleep(3000)
             liveData.postValue(AppState.Success("Холодно"))
         }.start()
