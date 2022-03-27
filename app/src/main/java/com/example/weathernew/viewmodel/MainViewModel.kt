@@ -3,10 +3,14 @@ package com.example.weathernew.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.weathernew.model.Repository
+import com.example.weathernew.model.RepositoryImpl
 import java.lang.IllegalStateException
 import java.lang.Thread.sleep
 
-class MainViewModel(val liveData:MutableLiveData<AppState> = MutableLiveData()) : ViewModel() {
+class MainViewModel(
+    private val liveData:MutableLiveData<AppState> = MutableLiveData(),
+    private val repositoryImpl: RepositoryImpl = RepositoryImpl()) : ViewModel() {
 
 //-------------------------------------------------------------------------------------
 /* LiveData — — объект, который хранит данные. На LiveData можно подписаться и получать
@@ -26,7 +30,7 @@ LifecycleOwner. Это позволяет не обновлять данные �
 
             val rand = (1..30).random()
             if (rand>10){
-                liveData.postValue(AppState.Success("Успешно"))
+                liveData.postValue(AppState.Success(repositoryImpl.getWeatherFromServer()))
             }else{
                 liveData.postValue(AppState.Error(IllegalStateException("Ошибка")))
             }

@@ -39,10 +39,12 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)                                                   // инициализация viewModel
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)                       // ViewModelProvider следит что бы каждая viewModel существовала в единственном экземпляре
          viewModel.getLivaData().observe(viewLifecycleOwner, Observer <AppState> { renderData(it) })        // ViewModel автоматически воспринимает жизненный цикл и обрабатывает сохранение и восстановление данных
-        viewModel.getWeatherFromServer()
+        viewModel.getWeatherFromServer()                                                                    // Observer записывает в renderData
     }
 
-    fun renderData(appState: AppState){
+//----------------------------------------------------------------------------------------------
+
+    private fun renderData(appState: AppState){
         when(appState){
             is AppState.Error -> {
                 binding.loadingLayout.visibility = View.GONE
@@ -54,7 +56,11 @@ class MainFragment : Fragment() {
                 binding.loadingLayout.visibility = View.VISIBLE
             }
             is AppState.Success -> {
-                binding.loadingLayout.visibility = View.VISIBLE
+                binding.loadingLayout.visibility = View.GONE
+                binding.cityName.text = appState.weatherData.city.name
+                binding.cityCoordinates.text = "${appState.weatherData.city.lat} ${appState.weatherData.city.lon}"
+                binding.temperatureValue.text = "${appState.weatherData.temperature}"
+                binding.feelsLikeValue.text = "${appState.weatherData.feelsLike}"
                 Snackbar.make(binding.mainView,"Успех",Snackbar.LENGTH_LONG).show()
             }
         }
