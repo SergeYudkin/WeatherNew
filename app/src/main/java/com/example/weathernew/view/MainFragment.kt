@@ -17,14 +17,14 @@ import com.google.android.material.snackbar.Snackbar
 class MainFragment : Fragment() {
 
 //------------------------------------------------------------------------------------
-     var _binding : FragmentMainBinding? = null
+private var _binding : FragmentMainBinding? = null
       private val binding : FragmentMainBinding     // binding не null
     get(){
         return _binding!!
     }
 //-------------------------------------------------------------------------------------
 
-    override fun onDestroy() {
+    override fun  onDestroy() {
         super.onDestroy()
         _binding = null
     }
@@ -33,13 +33,14 @@ class MainFragment : Fragment() {
     private lateinit var viewModel : MainViewModel    //  ссылка на  MainViewModel
 
 
+
 //---------------------------------------------------------------------------------------
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)                                                   // инициализация viewModel
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)                       // ViewModelProvider следит что бы каждая viewModel существовала в единственном экземпляре
          viewModel.getLivaData().observe(viewLifecycleOwner, Observer <AppState> { renderData(it) })        // ViewModel автоматически воспринимает жизненный цикл и обрабатывает сохранение и восстановление данных
-        viewModel.getWeatherFromServer()                                                                    // Observer записывает в renderData
+        viewModel.getWeather()                                                                    // Observer записывает в renderData все изменения
     }
 
 //----------------------------------------------------------------------------------------------
@@ -49,7 +50,7 @@ class MainFragment : Fragment() {
             is AppState.Error -> {
                 binding.loadingLayout.visibility = View.GONE
                 Snackbar.make(binding.mainView,"Ошибка",Snackbar.LENGTH_LONG).setAction("Попробовать ещё раз"){
-                    viewModel.getWeatherFromServer()
+                    viewModel.getWeatherFromLocalServer()
                 }.show()
             }
             is AppState.Loading ->{

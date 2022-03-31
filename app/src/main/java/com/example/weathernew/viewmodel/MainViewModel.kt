@@ -23,18 +23,38 @@ LifecycleOwner. Это позволяет не обновлять данные �
     }
 //--------------------------------------------------------------------------------------
 
-    fun getWeatherFromServer(){
+    fun getWeatherFromLocalStorageRus() = getWeatherFromLocalServer(true)
+
+    fun getWeatherFromLocalStorageWorld() = getWeatherFromLocalServer(false)
+
+    fun getWeatherFromRemoteSource() = getWeatherFromLocalServer(true) // заглушка на пятый урок
+
+
+
+    fun getWeatherFromLocalServer(isRussian: Boolean){
         liveData.postValue(AppState.Loading(0))
         Thread{
             sleep(1000)
 
             val rand = (1..30).random()
             if (rand>10){
-                liveData.postValue(AppState.Success(repositoryImpl.getWeatherFromServer()))
+                liveData.postValue(AppState.Success(
+                   if (isRussian) repositoryImpl.getWeatherFromLocalStorageRus()
+
+                else {
+                       repositoryImpl.getWeatherFromLocalStorageWorld()
+                   }
+                ))
+
+
             }else{
                 liveData.postValue(AppState.Error(IllegalStateException("Ошибка")))
             }
 
         }.start()
+    }
+
+    fun getWeather(){
+        getWeatherFromServer()
     }
 }
