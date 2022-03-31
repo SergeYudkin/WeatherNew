@@ -3,9 +3,7 @@ package com.example.weathernew.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weathernew.model.Repository
 import com.example.weathernew.model.RepositoryImpl
-import java.lang.IllegalStateException
 import java.lang.Thread.sleep
 
 class MainViewModel(
@@ -31,30 +29,28 @@ LifecycleOwner. Это позволяет не обновлять данные �
 
 
 
-    fun getWeatherFromLocalServer(isRussian: Boolean){
+    private fun getWeatherFromLocalServer(isRussian: Boolean){
         liveData.postValue(AppState.Loading(0))
         Thread{
             sleep(1000)
 
-            val rand = (1..30).random()
-            if (rand>10){
-                liveData.postValue(AppState.Success(
-                   if (isRussian) repositoryImpl.getWeatherFromLocalStorageRus()
-
-                else {
-                       repositoryImpl.getWeatherFromLocalStorageWorld()
-                   }
-                ))
+            if (true){
+                liveData.postValue(
+                    AppState.Success(
+                        if (isRussian) repositoryImpl.getWeatherFromLocalStorageRus()
+                        else {
+                            repositoryImpl.getWeatherFromLocalStorageWorld()
+                        }
+                    )
+                )
 
 
             }else{
-                liveData.postValue(AppState.Error(IllegalStateException("Ошибка")))
+              //  liveData.postValue(AppState.Error(IllegalStateException("Ошибка")))
             }
 
         }.start()
     }
 
-    fun getWeather(){
-        getWeatherFromServer()
-    }
+
 }

@@ -1,8 +1,14 @@
 package com.example.weathernew.model
 
-data class Weather(val city:City = getDefaultCity(),val temperature:Int=8, val feelsLike:Int=4)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-data class City(val name:String, val lat:Double,val lon:Double)
+
+@Parcelize                                         // не забыть подключить в градл плагин (apply plugin: 'kotlin-android-extensions') это даёт возможность передать Weather через бандл
+data class Weather(val city:City = getDefaultCity(),val temperature:Int=8, val feelsLike:Int=4): Parcelable
+
+@Parcelize                                         // анотация @Parcelize указывает на то что обьект парсилизирован и его можно передать через бандл
+data class City(val name:String, val lat:Double,val lon:Double): Parcelable
 
 
 
