@@ -40,7 +40,9 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     }
 //--------------------------------------------------------------------------------------
 
-    private lateinit var viewModel : MainViewModel    //  ссылка на  MainViewModel
+    private  val viewModel : MainViewModel by lazy {                        //  ссылка на  MainViewModel
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
 
 
@@ -48,7 +50,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {                                 // Observer записывает в renderData все изменения
         super.onViewCreated(view, savedInstanceState)                                                   // инициализация viewModel
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)                       // ViewModelProvider следит что бы каждая viewModel существовала в единственном экземпляре
+                                                                                                 // ViewModelProvider следит что бы каждая viewModel существовала в единственном экземпляре
          viewModel.getLivaData().observe(viewLifecycleOwner, Observer <AppState> { renderData(it) })    // ViewModel автоматически воспринимает жизненный цикл и обрабатывает сохранение и восстановление данных
 
         binding.mainFragmentRecyclerView.adapter = adapter        // к RecyclerView подключаем адаптер
@@ -112,7 +114,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     }
 
     override fun onItemClick(weather: Weather) {     // метод который нужно добавить (автоматически) при привязке OnMyItemClickListener
-        val bundle = Bundle()
+        val bundle = Bundle()                         // пакует данные в бандл
         bundle.putParcelable(BUNDLE_KEY,weather)
         requireActivity().supportFragmentManager.beginTransaction().add(
             R.id.container,DetailsFragment.newInstance(bundle)

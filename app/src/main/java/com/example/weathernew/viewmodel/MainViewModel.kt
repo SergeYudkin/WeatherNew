@@ -8,7 +8,12 @@ import java.lang.Thread.sleep
 
 class MainViewModel(
     private val liveData:MutableLiveData<AppState> = MutableLiveData(),
-    private val repositoryImpl: RepositoryImpl = RepositoryImpl()) : ViewModel() {
+    )
+    : ViewModel() {
+
+    private val repositoryImpl: RepositoryImpl by lazy {
+        RepositoryImpl()
+    }
 
 //-------------------------------------------------------------------------------------
 /* LiveData — — объект, который хранит данные. На LiveData можно подписаться и получать

@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.databinding.FragmentDetailsBinding
-import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.Weather
 
 const val BUNDLE_KEY = "key"
@@ -31,14 +29,14 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = arguments?.getParcelable<Weather>(BUNDLE_KEY)
+        val weather = arguments?.getParcelable<Weather>(BUNDLE_KEY)     // arguments получаем из метода newInstance
         if (weather!= null){
             setWeatherData(weather)
         }
 
     }
 
-    private fun setWeatherData(weather: Weather) {
+    private fun setWeatherData(weather: Weather) {              // заполнение данными которые получил onViewCreated
         binding.cityName.text = weather.city.name
         binding.cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
         binding.temperatureValue.text = "${weather.temperature}"
@@ -59,7 +57,7 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 
         fun newInstance(bundle: Bundle):DetailsFragment{
             val fragment = DetailsFragment()                //  фабричный метод
-            fragment.arguments = bundle
+            fragment.arguments = bundle                     // получает данные в бандле из метода onItemClick находящегося в MainFragment и вытаскивает их из бандла
             return fragment
         }
 

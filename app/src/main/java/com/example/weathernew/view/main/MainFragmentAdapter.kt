@@ -12,7 +12,7 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener): RecyclerView.Ada
 
     private var weatherData:List<Weather> = listOf()
 
-    fun setWeather(data:List<Weather>){
+    fun setWeather(data:List<Weather>){        // обновляет списки городов ( Россия - мир )
         this.weatherData = data
         notifyDataSetChanged()
     }
@@ -32,7 +32,7 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener): RecyclerView.Ada
     }
 
     inner class MainViewHolder(view:View):RecyclerView.ViewHolder(view) {         // inner внутренний класс  MainViewHolder по отношению к MainFragmentAdapter для получения доступа к listener
-        fun bind(weather: Weather) {
+        fun bind(weather: Weather) {                                                    // так как listener указан в адаптере как внутреннее свойство
             itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = weather.city.name
             itemView.setOnClickListener{
                 listener.onItemClick(weather)
