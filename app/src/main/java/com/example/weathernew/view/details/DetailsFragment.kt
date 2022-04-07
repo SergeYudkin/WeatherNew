@@ -29,18 +29,23 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = arguments?.getParcelable<Weather>(BUNDLE_KEY)     // arguments получаем из метода newInstance
-        if (weather!= null){
-            setWeatherData(weather)
+
+        arguments?.let {
+            it.getParcelable<Weather>(BUNDLE_KEY)?.run {
+                setWeatherData(this)
+            }
         }
 
     }
 
-    private fun setWeatherData(weather: Weather) {              // заполнение данными которые получил onViewCreated
-        binding.cityName.text = weather.city.name
-        binding.cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
-        binding.temperatureValue.text = "${weather.temperature}"
-        binding.feelsLikeValue.text = "${weather.feelsLike}"
+    private fun setWeatherData(weather: Weather) {
+        with(binding){
+            cityName.text = weather.city.name                                   // заполнение данными которые получил onViewCreated
+            cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
+            temperatureValue.text = "${weather.temperature}"
+            feelsLikeValue.text = "${weather.feelsLike}"
+        }
+
     }
 
 //-----------------------------------------------------------------------------------------
@@ -55,12 +60,10 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 //---------------------------------------------------------------------------------------------
     companion object {
 
-        fun newInstance(bundle: Bundle):DetailsFragment{
-            val fragment = DetailsFragment()                //  фабричный метод
-            fragment.arguments = bundle                     // получает данные в бандле из метода onItemClick находящегося в MainFragment и вытаскивает их из бандла
-            return fragment
+        fun newInstance(bundle: Bundle) = DetailsFragment().apply{              //  фабричный метод
+                                                                                    // получает данные в бандле из метода onItemClick находящегося в MainFragment и вытаскивает их из бандла
+            arguments = bundle
         }
-
 
     }
 //-----------------------------------------------------------------------------------------------

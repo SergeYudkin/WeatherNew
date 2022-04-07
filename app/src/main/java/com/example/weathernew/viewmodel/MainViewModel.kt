@@ -1,6 +1,5 @@
 package com.example.weathernew.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weathernew.model.RepositoryImpl
@@ -21,9 +20,8 @@ class MainViewModel(
 данные из интернета. LiveData знает о жизненном цикле Activity или фрагмента благодаря
 LifecycleOwner. Это позволяет не обновлять данные в Activity, если Activity уничтожена, и
 защищает от утечек памяти.*/
-    fun getLivaData(): LiveData<AppState>{
-        return liveData
-    }
+    fun getLivaData() = liveData
+
 //--------------------------------------------------------------------------------------
 
     fun getWeatherFromLocalStorageRus() = getWeatherFromLocalServer(true)
@@ -33,29 +31,24 @@ LifecycleOwner. Это позволяет не обновлять данные �
     fun getWeatherFromRemoteSource() = getWeatherFromLocalServer(true) // заглушка на пятый урок
 
 
-
     private fun getWeatherFromLocalServer(isRussian: Boolean){
         liveData.postValue(AppState.Loading(0))
         Thread{
             sleep(1000)
 
-            if (true){
                 liveData.postValue(
                     AppState.Success(
-                        if (isRussian) repositoryImpl.getWeatherFromLocalStorageRus()
-                        else {
-                            repositoryImpl.getWeatherFromLocalStorageWorld()
+                        with(repositoryImpl){
+                            if (isRussian) {
+                                getWeatherFromLocalStorageRus()
+                            }else {
+                                getWeatherFromLocalStorageWorld()
+                            }
                         }
                     )
                 )
 
-
-            }else{
-              //  liveData.postValue(AppState.Error(IllegalStateException("Ошибка")))
-            }
-
         }.start()
     }
-
 
 }
