@@ -19,7 +19,7 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener): RecyclerView.Ada
 //------------------------------------------------------------------------------------------------------------------------------------
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainFragmentAdapter.MainViewHolder {
-        return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.main_recycler_item,parent,false))    // группа контейнеров
+        return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.fragment_main_recycler_city_item,parent,false))    // группа контейнеров
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
