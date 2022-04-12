@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.model.Weather
+import com.example.weathernew.model.WeatherDTO
+import com.example.weathernew.utils.WeatherLoader
 
 const val BUNDLE_KEY = "key"
 
-class DetailsFragment : Fragment() {
+class DetailsFragment : Fragment(), WeatherLoader.OnWeatherLoaded {       // имплементируем интерфейс OnWeatherLoaded из WeatherLoader
 
 //------------------------------------------------------------------------------------
 private var _binding : FragmentDetailsBinding? = null    // привязываем макет
@@ -26,24 +28,29 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
     }
 //--------------------------------------------------------------------------------------
 
-
+    private val weatherLoader = WeatherLoader(this)
+    lateinit var localWeather : Weather
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
-            it.getParcelable<Weather>(BUNDLE_KEY)?.run {
-                setWeatherData(this)
+            it.getParcelable<Weather>(BUNDLE_KEY)?.let {
+                localWeather = it
+                weatherLoader.loadWeather(it.city.lat,it.city.lon)     // передаём ссылку на реализацию интерфейса OnWeatherLoaded
             }
         }
 
     }
 
-    private fun setWeatherData(weather: Weather) {
+    private fun setWeatherData(weatherDTO: WeatherDTO) {
         with(binding){
-            cityName.text = weather.city.name                                   // заполнение данными которые получил onViewCreated
-            cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
-            temperatureValue.text = "${weather.temperature}"
-            feelsLikeValue.text = "${weather.feelsLike}"
+            with(localWeather) {
+                cityName.text =
+                    city.name                                   // заполнение данными которые получил onViewCreated
+                cityCoordinates.text = "${city.lat} ${city.lon}"
+                temperatureValue.text = "${weatherDTO.fact.temp}"
+                feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
+            }
         }
 
     }
@@ -65,6 +72,17 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
             arguments = bundle
         }
 
+    }
+//---------------------------------------------------------------------------------------------------
+    override fun onLoaded(weatherDTO: WeatherDTO?) {
+        weatherDTO?.let {                           // функции которые мы добавили автоматически в результате имплементации интерфейса OnWeatherLoaded, сюда и передаётся ответ
+            setWeatherData(weatherDTO)
+        }
+
+    }
+
+    override fun onFailed() {
+        TODO("Not yet implemented")
     }
 //-----------------------------------------------------------------------------------------------
 }
