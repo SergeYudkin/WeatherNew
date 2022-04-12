@@ -2,6 +2,8 @@ package com.example.weathernew.utils
 
 import android.os.Handler
 import android.os.Looper
+import com.example.weathernew.BuildConfig
+
 import com.example.weathernew.model.WeatherDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
@@ -20,9 +22,9 @@ class WeatherLoader(private val onWeatherLoaded:OnWeatherLoaded) {
                 readTimeout = 2000
                 addRequestProperty(
                     "X-Yandex-API-Key",
-                    "8a6d62b9-8c7c-4b42-a829-789b9767b393"              // передаём ключ апи
-                )
+                    BuildConfig.WEATHER_API_KEY)      // передаём ключ апи
             }
+
             val bufferedReader =
                 BufferedReader(InputStreamReader(httpsURLConnection.inputStream))    //  Connection счатывает в буфер строку
             val weatherDTO: WeatherDTO? = Gson().fromJson(
