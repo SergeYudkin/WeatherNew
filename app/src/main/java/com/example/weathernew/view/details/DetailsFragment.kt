@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.model.Weather
 import com.example.weathernew.model.WeatherDTO
+import com.example.weathernew.utils.BUNDLE_KEY
 import com.example.weathernew.utils.WeatherLoader
 
-const val BUNDLE_KEY = "key"
+
 
 class DetailsFragment : Fragment(), WeatherLoader.OnWeatherLoaded {       // имплементируем интерфейс OnWeatherLoaded из WeatherLoader
 
@@ -81,8 +82,5 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 
     }
 
-    override fun onFailed() {
-        TODO("Not yet implemented")
-    }
 //-----------------------------------------------------------------------------------------------
 }

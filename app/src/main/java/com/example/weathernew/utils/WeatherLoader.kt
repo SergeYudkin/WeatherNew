@@ -5,6 +5,7 @@ import android.os.Looper
 import com.example.weathernew.BuildConfig
 
 import com.example.weathernew.model.WeatherDTO
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -16,23 +17,28 @@ class WeatherLoader(private val onWeatherLoaded:OnWeatherLoaded) {
 
     fun loadWeather(lat:Double, lon:Double) {                          // запрос погоды с сервера
         Thread {
-            val url = URL("https://api.weather.yandex.ru/v2/informers?lat=$lat&lon=$lon")
-            val httpsURLConnection = (url.openConnection() as HttpsURLConnection).apply {
-                requestMethod = "GET"          // открываем соединение гет запрос
-                readTimeout = 2000
-                addRequestProperty(
-                    "X-Yandex-API-Key",
-                    BuildConfig.WEATHER_API_KEY)      // передаём ключ апи
-            }
+            try {
+                val url = URL("https://api.weather.yandex.ru/v2/informers?lat=$lat&lon=$lon")
+                val httpsURLConnection = (url.openConnection() as HttpsURLConnection).apply {
+                    requestMethod = "GET"          // открываем соединение гет запрос
+                    readTimeout = 2000
+                    addRequestProperty(
+                        API_KEY,
+                        BuildConfig.WEATHER_API_KEY
+                    )      // передаём ключ апи
+                }
 
-            val bufferedReader =
-                BufferedReader(InputStreamReader(httpsURLConnection.inputStream))    //  Connection счатывает в буфер строку
-            val weatherDTO: WeatherDTO? = Gson().fromJson(
-                convertBufferToResult(bufferedReader),                              // конвертер пихает в буфер большой стринг, далее Gson переводит большую строку в WeatherDTO
-                WeatherDTO::class.java
-            )
-            Handler(Looper.getMainLooper()).post {                                      // реализацию интерфейса обернули в хендлер так как она должна происходить в главном потоке
-                onWeatherLoaded.onLoaded(weatherDTO)                                   // реализацию интерфейса передаём в weatherDTO
+                val bufferedReader =
+                    BufferedReader(InputStreamReader(httpsURLConnection.inputStream))    //  Connection счатывает в буфер строку
+                val weatherDTO: WeatherDTO? = Gson().fromJson(
+                    convertBufferToResult(bufferedReader),                              // конвертер пихает в буфер большой стринг, далее Gson переводит большую строку в WeatherDTO
+                    WeatherDTO::class.java
+                )
+                Handler(Looper.getMainLooper()).post {                                      // реализацию интерфейса обернули в хендлер так как она должна происходить в главном потоке
+                    onWeatherLoaded.onLoaded(weatherDTO)                                   // реализацию интерфейса передаём в weatherDTO
+                }
+            }catch (e: Exception){
+                onWeatherLoaded.onFailed("Error", Snackbar.LENGTH_LONG)
             }
 
         }.start()
@@ -45,8 +51,12 @@ class WeatherLoader(private val onWeatherLoaded:OnWeatherLoaded) {
     }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     interface OnWeatherLoaded{
-        fun onLoaded(weatherDTO: WeatherDTO?)
-        fun onFailed() // TODO  д/з
+    fun onLoaded(weatherDTO: WeatherDTO?)
+
+    fun onFailed(text:String, length:Int){
+
     }
+    }
+
 
 }

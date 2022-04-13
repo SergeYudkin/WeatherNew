@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.Weather
-import com.example.weathernew.view.details.BUNDLE_KEY
+import com.example.weathernew.utils.BUNDLE_KEY
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
