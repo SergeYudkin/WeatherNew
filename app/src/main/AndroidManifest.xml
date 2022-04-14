@@ -26,6 +26,10 @@
             android:exported="true">
 
         </activity>
+
+        <service android:name=".view.main.MyService">
+
+        </service>
     </application>
 
 </manifest>
