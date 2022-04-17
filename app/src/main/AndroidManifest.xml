@@ -21,24 +21,18 @@
             </intent-filter>
 
         </activity>
-        <activity
-            android:name=".view.MainActivityWebView"
-            android:exported="true">
-
-        </activity>
-
-        <service android:name=".view.main.MyService">
-
-        </service>
 
         <receiver
             android:exported="true"
-            android:name=".view.main.MyBroadcastReceiver">
+            android:name=".lessons.MyBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_AIRPLANE_MODE_CHANGED"/>
                 <action android:name="MyAction"/>
             </intent-filter>
         </receiver>
+
+        <service android:name=".view.details.DetailsService"
+            android:exported="true"/>
 
     </application>
 

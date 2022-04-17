@@ -1,4 +1,4 @@
-package com.example.weathernew.view.main
+package com.example.weathernew.lessons
 
 import android.content.BroadcastReceiver
 import android.content.Context

@@ -1,22 +1,16 @@
-package com.example.weathernew.view
+package com.example.weathernew.lessons
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.ContactsContract.CommonDataKinds.Website.URL
 
 
-import com.example.weathernew.R
-import com.example.weathernew.databinding.ActivityMainBinding
 import com.example.weathernew.databinding.ActivityMainWebviewBinding
-import com.example.weathernew.view.main.MainFragment
 import java.io.BufferedReader
-import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.URL
 
-import java.util.stream.Collector
 import java.util.stream.Collectors
 import javax.net.ssl.HttpsURLConnection
 

@@ -1,4 +1,4 @@
-package com.example.weathernew.view.main
+package com.example.weathernew.lessons
 
 import android.app.IntentService
 import android.content.Intent

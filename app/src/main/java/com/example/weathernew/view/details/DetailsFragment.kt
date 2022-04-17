@@ -1,19 +1,25 @@
 package com.example.weathernew.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weathernew.databinding.FragmentDetailsBinding
+import com.example.weathernew.lessons.MyBroadcastReceiver
+import com.example.weathernew.lessons.MyService
 import com.example.weathernew.model.Weather
 import com.example.weathernew.model.WeatherDTO
-import com.example.weathernew.utils.BUNDLE_KEY
-import com.example.weathernew.utils.WeatherLoader
+import com.example.weathernew.utils.*
 
 
-
-class DetailsFragment : Fragment(), WeatherLoader.OnWeatherLoaded {       // имплементируем интерфейс OnWeatherLoaded из WeatherLoader
+class DetailsFragment : Fragment() {
 
 //------------------------------------------------------------------------------------
 private var _binding : FragmentDetailsBinding? = null    // привязываем макет
@@ -21,15 +27,30 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
     get(){
         return _binding!!
     }
+
+
+    private val receiver:BroadcastReceiver = object : BroadcastReceiver(){
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                val weatherDTO = it.getParcelableExtra<WeatherDTO>(BUNDLE_KEY_WEATHER)
+                if (weatherDTO!=null){
+                    setWeatherData(weatherDTO)
+                }else{
+
+                }
+            }
+        }
+    }
 //-------------------------------------------------------------------------------------
 
     override fun  onDestroy() {
         super.onDestroy()
         _binding = null
+       // requireActivity().unregisterReceiver(receiver)             // закрываем глобальную регистрацию
+        LocalBroadcastManager.getInstance(requireActivity()).unregisterReceiver(receiver)   // закрываем локальную регистрацию
     }
 //--------------------------------------------------------------------------------------
 
-    private val weatherLoader = WeatherLoader(this)
     lateinit var localWeather : Weather
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,9 +58,17 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
         arguments?.let {
             it.getParcelable<Weather>(BUNDLE_KEY)?.let {
                 localWeather = it
-                weatherLoader.loadWeather(it.city.lat,it.city.lon)     // передаём ссылку на реализацию интерфейса OnWeatherLoaded
+                val  intent = Intent(requireActivity(),DetailsService::class.java)
+                        intent.putExtra(BUNDLE_KEY_LAT, localWeather.city.lat)  // передаём координаты в детеилс сервис
+                intent.putExtra(BUNDLE_KEY_LON, localWeather.city.lon)
+                requireActivity().startService(intent)
+                LocalBroadcastManager.getInstance(requireActivity())
+                    .registerReceiver(receiver, IntentFilter(DETAILS_INTENT_FILTER))  // регистрируем ресивер локальный
             }
         }
+
+            //requireActivity().registerReceiver(receiver, IntentFilter(BROADCAST_ACTION))   // регистрируем ресивер глобальный
+
 
     }
 
@@ -75,11 +104,6 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 
     }
 //---------------------------------------------------------------------------------------------------
-    override fun onLoaded(weatherDTO: WeatherDTO?) {
-        weatherDTO?.let {                           // функции которые мы добавили автоматически в результате имплементации интерфейса OnWeatherLoaded, сюда и передаётся ответ
-            setWeatherData(weatherDTO)
-        }
 
-    }
-    
+
 }
