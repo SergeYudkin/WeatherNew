@@ -11,12 +11,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.weathernew.BuildConfig
 import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.lessons.MyBroadcastReceiver
 import com.example.weathernew.lessons.MyService
 import com.example.weathernew.model.Weather
 import com.example.weathernew.model.WeatherDTO
 import com.example.weathernew.utils.*
+import com.google.gson.Gson
+import okhttp3.*
+import java.io.IOException
 
 
 class DetailsFragment : Fragment() {
@@ -41,6 +45,43 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
             }
         }
     }
+
+    private var client : OkHttpClient? = null   //создаём клиент
+    private fun getWeather(){
+        if (client==null)
+            client = OkHttpClient()
+
+        val builder = Request.Builder().apply {
+            header(API_KEY,BuildConfig.WEATHER_API_KEY)                  //указываем хедеры и адрес
+            url(YANDEX_API_URL+YANDEX_API_URL_END_POINT
+                    + "?lat=${localWeather.city.lat}&lon=${localWeather.city.lon}")
+        }
+        val request =  builder.build()              //билдер переводим в реквест
+        val call =  client?.newCall(request)         // реквест превращаем в вызов
+        /*Thread{
+            val response = call?.execute() //ошибка network in main thread exception если не засунуть его в отдельный поток
+        }.start()*/
+
+        call?.enqueue(object :Callback{               //вызываем вызов в данном случае асинхронно во вспомогательном потоке
+            override fun onFailure(call: Call, e: IOException) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful){
+                     response.body()?.let {
+                         val json  = it.string()
+                         requireActivity().runOnUiThread{               //обработка в главном потоке
+                             setWeatherData(Gson().fromJson(json, WeatherDTO::class.java))
+                         }
+                    }
+
+                }else{
+                    //TODO HW код ошибки
+                }
+            }
+        })
+    }
 //-------------------------------------------------------------------------------------
 
     override fun  onDestroy() {
@@ -58,16 +99,11 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
         arguments?.let {
             it.getParcelable<Weather>(BUNDLE_KEY)?.let {
                 localWeather = it
-                val  intent = Intent(requireActivity(),DetailsService::class.java)
-                        intent.putExtra(BUNDLE_KEY_LAT, localWeather.city.lat)  // передаём координаты в детеилс сервис
-                intent.putExtra(BUNDLE_KEY_LON, localWeather.city.lon)
-                requireActivity().startService(intent)
-                LocalBroadcastManager.getInstance(requireActivity())
-                    .registerReceiver(receiver, IntentFilter(DETAILS_INTENT_FILTER))  // регистрируем ресивер локальный
+                getWeather()
             }
         }
 
-            //requireActivity().registerReceiver(receiver, IntentFilter(BROADCAST_ACTION))   // регистрируем ресивер глобальный
+
 
 
     }
