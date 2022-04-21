@@ -2,14 +2,10 @@ package com.example.weathernew.view.details
 
 import android.app.IntentService
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weathernew.BuildConfig
 import com.example.weathernew.model.WeatherDTO
 import com.example.weathernew.utils.*
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader

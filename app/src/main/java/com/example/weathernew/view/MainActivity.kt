@@ -1,10 +1,10 @@
 package com.example.weathernew.view
 
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.example.weathernew.R
 import com.example.weathernew.databinding.ActivityMainBinding
 import com.example.weathernew.lessons.MyBroadcastReceiver
@@ -13,7 +13,7 @@ import com.example.weathernew.model.WeatherDTO
 import com.example.weathernew.utils.BUNDLE_KEY
 import com.example.weathernew.utils.BUNDLE_KEY_WEATHER
 import com.example.weathernew.view.details.DetailsFragment
-import com.example.weathernew.view.main.*
+import com.example.weathernew.view.main.MainFragment
 
 
 class MainActivity : AppCompatActivity() {

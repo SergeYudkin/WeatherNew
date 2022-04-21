@@ -1,7 +1,6 @@
 package com.example.weathernew.lessons
 
 import android.content.Context
-import android.service.media.MediaBrowserService
 import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
