@@ -2,16 +2,19 @@ package com.example.weathernew.view
 
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.Menu
 import android.view.MenuItem
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weathernew.R
 import com.example.weathernew.databinding.ActivityMainBinding
 import com.example.weathernew.lessons.MyBroadcastReceiver
 import com.example.weathernew.lessons.ThreadsFragment
 import com.example.weathernew.model.WeatherDTO
+import com.example.weathernew.room.App
 import com.example.weathernew.utils.BUNDLE_KEY
 import com.example.weathernew.utils.BUNDLE_KEY_WEATHER
 import com.example.weathernew.view.details.DetailsFragment
@@ -27,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -46,23 +50,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, MainFragment.newInstance()).commit()
         }
 
-        val sp = getSharedPreferences("TAG",Context.MODE_PRIVATE) // классический вызов
-
-        val activity = getPreferences(Context.MODE_PRIVATE)  // на уровне активити
-
-        val app = getDefaultSharedPreferences(this)   // на уровне приложения
-
-        app.getString("key","")
-
-        app.edit().putString("key","value").apply()
-
-
-        val editor  = app.edit()
-        editor.putString("key1","value1")
-        editor.putString("key2","value2")
-        editor.putBoolean("key3",true)
-        editor.apply()
-
+      val listWeather =  App.getHistoryWeatherDao().getAllHistoryWeather()      // App вытащили на самый верхний уровень, в манифест
 
     }
 
