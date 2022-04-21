@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.load
+import com.bumptech.glide.Glide
 import com.example.weathernew.BuildConfig
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentDetailsBinding
@@ -17,6 +19,7 @@ import com.example.weathernew.viewmodel.DetailsViewModel
 import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
 import okhttp3.*
 import java.io.IOException
 
@@ -80,6 +83,16 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
                 cityCoordinates.text = "${city.lat} ${city.lon}"
                 temperatureValue.text = "${weather.temperature}"
                 feelsLikeValue.text = "${weather.feelsLike}"
+
+//---------------------------------------------------------------------------------------------------------------
+               /* Glide.with(headerIcon.context).load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                    .into(headerIcon)*/
+
+              /*  Picasso.get()
+                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")          // подгружаесм картинки с помищью разных библиотек
+                    .into(headerIcon)*/
+
+                headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
             }
         }
 
