@@ -9,9 +9,10 @@ import com.example.weathernew.repository.RepositoryImpl
 import com.example.weathernew.utils.YANDEX_API_URL
 import com.example.weathernew.utils.YANDEX_API_URL_END_POINT
 import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
 import java.io.IOException
 import java.lang.Thread.sleep
 
@@ -29,9 +30,7 @@ class DetailsViewModel(
 
      fun getWeatherFromRemoteServer(lat: Double, lon: Double){
         liveData.postValue(AppState.Loading(0))
-       repositoryImpl.getWeatherFromServer(
-           YANDEX_API_URL + YANDEX_API_URL_END_POINT
-               + "?lat=${lat}&lon=${lon}",callback)
+       repositoryImpl.getWeatherFromServer(lat, lon,callback)
     }
 
     fun converterDTOtoModel(weatherDTO: WeatherDTO):List<Weather>{
@@ -39,22 +38,22 @@ class DetailsViewModel(
     }
 
 
-    private val callback =  object : Callback {
-        override fun onFailure(call: Call, e: IOException) {   // сюда приходит ответ от RepositoryImpl(жирного репозитория)
+    private val callback =  object : Callback <WeatherDTO>{
+        override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {   // сюда приходит ответ от RepositoryImpl(жирного репозитория)
             TODO("Not yet implemented")
         }
 
-        override fun onResponse(call: Call, response: Response) {
+        override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
             if (response.isSuccessful){
                 response.body()?.let {
-                    val json  = it.string()
-                    liveData.postValue(AppState.Success(converterDTOtoModel(Gson().fromJson(json, WeatherDTO::class.java))))
+                    liveData.postValue(AppState.Success(converterDTOtoModel(it)))
 
                 }
 
             }else{
-                
-            }
-    }   }
 
+            }
+
+        }
+    }
 }

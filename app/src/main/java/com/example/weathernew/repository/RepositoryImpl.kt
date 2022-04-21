@@ -9,7 +9,12 @@ import com.example.weathernew.utils.API_KEY
 import com.example.weathernew.utils.YANDEX_API_URL
 import com.example.weathernew.utils.YANDEX_API_URL_END_POINT
 import com.google.gson.Gson
-import okhttp3.*
+import com.google.gson.GsonBuilder
+import retrofit2.Callback
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
+
 import java.io.IOException
 
 class RepositoryImpl: RepositoryCitiesList, RepositoryDetails {
@@ -20,14 +25,16 @@ class RepositoryImpl: RepositoryCitiesList, RepositoryDetails {
     override fun getWeatherFromLocalStorageWorld() = getWorldCities()
 
 
-    override fun getWeatherFromServer(url: String, callback: Callback) {
-        val builder = Request.Builder().apply {
-            header(API_KEY, BuildConfig.WEATHER_API_KEY)
-            url(url)
+
+   private val retrofit = Retrofit.Builder().baseUrl(YANDEX_API_URL)
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create())
+        ).build().create(WeatherApi::class.java)
 
 
-        }
-        OkHttpClient().newCall(builder.build()).enqueue(callback)
+
+    override fun getWeatherFromServer(lat:Double,lon:Double, callback: Callback<WeatherDTO>) {
+
+        retrofit.getWeather(BuildConfig.WEATHER_API_KEY,lat,lon).enqueue(callback)
     }
 
 
