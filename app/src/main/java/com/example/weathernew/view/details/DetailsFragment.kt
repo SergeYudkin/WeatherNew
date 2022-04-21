@@ -48,15 +48,16 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
         with(binding){
             when(appState){
                 is AppState.Error -> {
-                    //HW
+                    appState.e
                 }
                 is AppState.Loading ->{
-                    //HW
+                    appState.progress
                 }
-                is AppState.Success -> {
+                is AppState.SuccessCity -> {
                     val weather = appState.weatherData[0]
                     setWeatherData(weather)
                 }
+                else -> {}
             }
         }
     }

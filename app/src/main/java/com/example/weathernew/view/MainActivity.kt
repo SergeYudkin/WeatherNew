@@ -1,7 +1,9 @@
 package com.example.weathernew.view
 
 
+import android.content.Context
 import android.os.Bundle
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +45,25 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, MainFragment.newInstance()).commit()
         }
+
+        val sp = getSharedPreferences("TAG",Context.MODE_PRIVATE) // классический вызов
+
+        val activity = getPreferences(Context.MODE_PRIVATE)  // на уровне активити
+
+        val app = getDefaultSharedPreferences(this)   // на уровне приложения
+
+        app.getString("key","")
+
+        app.edit().putString("key","value").apply()
+
+
+        val editor  = app.edit()
+        editor.putString("key1","value1")
+        editor.putString("key2","value2")
+        editor.putBoolean("key3",true)
+        editor.apply()
+
+
     }
 
 

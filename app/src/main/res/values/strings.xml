@@ -8,4 +8,6 @@
     <string name="reload">Reload</string>
     <string name="success">Успех</string>
     <string name="again">Попробовать ещё раз.</string>
+    <string name="errorCode">Error code</string>
+    <string name="serverError">Server error</string>
 </resources>

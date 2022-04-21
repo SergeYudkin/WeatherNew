@@ -28,7 +28,6 @@ LifecycleOwner. Это позволяет не обновлять данные �
 
     fun getWeatherFromLocalStorageWorld() = getWeatherFromLocalServer(false)
 
-    fun getWeatherFromRemoteSource() = getWeatherFromLocalServer(true) // заглушка на пятый урок
 
 
     private fun getWeatherFromLocalServer(isRussian: Boolean){
@@ -37,7 +36,7 @@ LifecycleOwner. Это позволяет не обновлять данные �
             sleep(1000)
 
                 liveData.postValue(
-                    AppState.Success(
+                    AppState.SuccessDetails(
                         with(repositoryImpl){
                             if (isRussian) {
                                 getWeatherFromLocalStorageRus()

@@ -93,7 +93,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                 is AppState.Loading ->{
                     mainFragmentLoadingLayout.visibility = View.VISIBLE
                 }
-                is AppState.Success -> {
+                is AppState.SuccessDetails -> {
                     mainFragmentLoadingLayout.visibility = View.GONE
 
                     adapter.setWeather(appState.weatherData)            // в случае успеха подгружаем адаптер
