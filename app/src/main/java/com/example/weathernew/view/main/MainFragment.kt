@@ -1,6 +1,9 @@
 package com.example.weathernew.view.main
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +19,15 @@ import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.example.weathernew.utils.KEY_SP
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 var isRussian = true
 
 class MainFragment : Fragment(),OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
 
+
+    private lateinit var pref : SharedPreferences
 //------------------------------------------------------------------------------------
 private var _binding : FragmentMainBinding? = null     // привязываем макет
       private val binding : FragmentMainBinding     // binding не null
@@ -59,20 +66,37 @@ private var _binding : FragmentMainBinding? = null     // привязываем
          viewModel.getLivaData().observe(viewLifecycleOwner, Observer <AppState> { renderData(it) })    // ViewModel автоматически воспринимает жизненный цикл и обрабатывает сохранение и восстановление данных
         viewModel.getWeatherFromLocalStorageRus()
 
+
+
+
     }
 
     private fun initView() {
+
         with(binding){
             mainFragmentRecyclerView.adapter = adapter                 // к RecyclerView подключаем адаптер
             mainFragmentFAB.setOnClickListener {
                 sentRequest()
             }
-        }
 
+        }
+            //isRussian = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
     }
 
+   /* fun fab (){
+        pref = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
+        binding.mainFragmentFAB.setImageResource(pref.getBoolean("currentCities",false))
+        binding.mainFragmentFAB.setOnClickListener{
+             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+            pref.edit()
+                .putBoolean("currentCities",false)
+                //.putBoolean("currentCities",false)
+                .apply()
+        }
+    }*/
+
     //-----------------------------------------------------------------------------------------------------
-     fun sentRequest() {
+    private fun sentRequest() {
     isRussian = !isRussian            // меняем на противоположное (если false то true, если true то false)
         if (isRussian) {                                                // преключения между Российскими городами и миром
             viewModel.getWeatherFromLocalStorageRus()
@@ -149,4 +173,8 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         }
     }
 //-----------------------------------------------------------------------------------------------
+}
+
+private fun FloatingActionButton.setImageResource(boolean: Boolean) {
+
 }
