@@ -66,13 +66,13 @@ class MainActivity : AppCompatActivity() {
         }
        // val mainFragmentFAB =!!mainFragmentFAB
 
-            pref = getSharedPreferences(KEY_SP,Context.MODE_PRIVATE)
+         /*   pref = getSharedPreferences(KEY_SP,Context.MODE_PRIVATE)
         //val !!mainFragmentFAB = mainFragmentFAB
         mainFragmentFAB.setImageResource(pref.getBoolean(ic_russia.toString(),true))
         pref.edit()
             .putBoolean(KEY_SP,true)
             .putBoolean(KEY_SP,false)
-            .apply()
+            .apply()*/
 
 
 
