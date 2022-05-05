@@ -17,13 +17,7 @@ import retrofit2.create
 
 import java.io.IOException
 
-class RepositoryImpl: RepositoryCitiesList, RepositoryDetails {
-
-
-
-    override fun getWeatherFromLocalStorageRus() = getRussianCities()
-    override fun getWeatherFromLocalStorageWorld() = getWorldCities()
-
+class RepositoryRemoteImpl: RepositoryDetails {
 
 
    private val retrofit = Retrofit.Builder().baseUrl(YANDEX_API_URL)

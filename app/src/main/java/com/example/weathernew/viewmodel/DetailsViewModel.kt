@@ -1,35 +1,42 @@
 package com.example.weathernew.viewmodel
 
-import android.icu.util.UniversalTimeScale.toLong
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weathernew.R
-import com.example.weathernew.model.Fact
 import com.example.weathernew.model.Weather
 import com.example.weathernew.model.WeatherDTO
 import com.example.weathernew.model.getDefaultCity
-import com.example.weathernew.repository.RepositoryImpl
+import com.example.weathernew.repository.RepositoryLocalImpl
+import com.example.weathernew.repository.RepositoryRemoteImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-import java.lang.Thread.sleep
-
 class DetailsViewModel(
      val liveData:MutableLiveData<AppState> = MutableLiveData(),
+     private val repositoryLocalImpl: RepositoryLocalImpl = RepositoryLocalImpl()
     )
     : ViewModel() {
 
-    private val repositoryImpl: RepositoryImpl by lazy {
-        RepositoryImpl()
+    private val repositoryRemoteImpl: RepositoryRemoteImpl by lazy {
+        RepositoryRemoteImpl()
     }
+
+
     fun getLivaData() = liveData
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun saveWeather(weather: Weather){
+        repositoryLocalImpl.saveWeather(weather)
+    }
 
 
 
      fun getWeatherFromRemoteServer(lat: Double, lon: Double){
         liveData.postValue(AppState.Loading(0))
-       repositoryImpl.getWeatherFromServer(lat, lon,callback)
+       repositoryRemoteImpl.getWeatherFromServer(lat, lon,callback)
     }
 
    /* fun converterDTOtoModel(weatherDTO: WeatherDTO):List<Weather>{
@@ -38,7 +45,7 @@ class DetailsViewModel(
 
 
     private val callback =  object : Callback <WeatherDTO>{
-        override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {   // сюда приходит ответ от RepositoryImpl(жирного репозитория)
+        override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
             liveData.postValue(AppState.Error(R.string.errorCode,418))
         }
 

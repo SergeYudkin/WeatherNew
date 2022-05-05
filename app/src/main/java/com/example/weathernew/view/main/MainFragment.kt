@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresOptIn
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,8 @@ import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
+var isRussian = true
+
 class MainFragment : Fragment(),OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
 
 //------------------------------------------------------------------------------------
@@ -27,13 +30,13 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 //-------------------------------------------------------------------------------------
 
 
-    private val adapter: MainFragmentAdapter by lazy {          // вызвали адаптер
-        MainFragmentAdapter(this)
+    private val adapter: CitiesAdapter by lazy {          // вызвали адаптер
+        CitiesAdapter(this)
     }
 
 //--------------------------------------------------------------------------------------
 
-    private var isRussian = true
+
 
  //--------------------------------------------------------------------------------------
     override fun  onDestroy() {
@@ -69,17 +72,20 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     }
 
     //-----------------------------------------------------------------------------------------------------
-    private fun sentRequest() {
+     fun sentRequest() {
     isRussian = !isRussian            // меняем на противоположное (если false то true, если true то false)
         if (isRussian) {                                                // преключения между Российскими городами и миром
             viewModel.getWeatherFromLocalStorageRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+
+           
         } else {
             viewModel.getWeatherFromLocalStorageWorld()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         }
 
     }
+
 
 //----------------------------------------------------------------------------------------------
 

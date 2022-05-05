@@ -1,7 +1,9 @@
 package com.example.weathernew.utils
 
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.RequiresApi
 import com.example.weathernew.BuildConfig
 
 import com.example.weathernew.model.WeatherDTO
@@ -15,6 +17,7 @@ import javax.net.ssl.HttpsURLConnection
 
 class WeatherLoader(private val onWeatherLoaded:OnWeatherLoaded) {
 
+    @RequiresApi(Build.VERSION_CODES.N)
     fun loadWeather(lat:Double, lon:Double) {                          // запрос погоды с сервера
         Thread {
             try {
@@ -46,6 +49,7 @@ class WeatherLoader(private val onWeatherLoaded:OnWeatherLoaded) {
     }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private  fun  convertBufferToResult(bufferedReader:BufferedReader):String{     // конвертер, сбор данных в одну большую строку
         return bufferedReader.lines().collect(Collectors.joining("\n"))
     }

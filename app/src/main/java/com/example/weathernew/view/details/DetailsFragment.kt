@@ -1,10 +1,12 @@
 package com.example.weathernew.view.details
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
@@ -24,6 +26,7 @@ import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_details.*
 import okhttp3.*
 import java.io.IOException
 
@@ -44,6 +47,7 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun renderData(appState: AppState){
         with(binding){
             when(appState){
@@ -65,6 +69,7 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 //--------------------------------------------------------------------------------------
 
     private lateinit var localWeather : Weather
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getLivaData().observe(viewLifecycleOwner,{
@@ -80,7 +85,14 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     private fun setWeatherData(weather: Weather) {
+
+       // weatherIcon.setOnClickListener{   // кнопка для сохранения погоды
+            weather.city = localWeather.city     // погода сохраняется автоматически после открытия фрагмента
+            viewModel.saveWeather(weather)
+        //}
+
         with(binding){
             with(localWeather) {
                 cityName.text =

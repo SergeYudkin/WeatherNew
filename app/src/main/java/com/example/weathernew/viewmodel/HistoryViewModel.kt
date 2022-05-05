@@ -1,12 +1,14 @@
 package com.example.weathernew.viewmodel
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weathernew.repository.RepositoryLocalImpl
 import com.example.weathernew.repository.RepositoryRemoteImpl
 import java.lang.Thread.sleep
 
-class MainViewModel(
+class HistoryViewModel(
     private val liveData:MutableLiveData<AppState> = MutableLiveData(),
     )
     : ViewModel() {
@@ -25,30 +27,15 @@ LifecycleOwner. Это позволяет не обновлять данные �
 
 //--------------------------------------------------------------------------------------
 
-    fun getWeatherFromLocalStorageRus() = getWeatherFromLocalServer(true)
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getAllHistory(){
+       // liveData.postValue(AppState.Loading(0))
 
-    fun getWeatherFromLocalStorageWorld() = getWeatherFromLocalServer(false)
-
-
-
-    private fun getWeatherFromLocalServer(isRussian: Boolean){
-        liveData.postValue(AppState.Loading(0))
         Thread{
-            sleep(1000)
-
-                liveData.postValue(
-                    AppState.SuccessDetails(
-                        with(repositoryLocalImpl){
-                            if (isRussian) {
-                                getWeatherFromLocalStorageRus()
-                            }else {
-                                getWeatherFromLocalStorageWorld()
-                            }
-                        }
-                    )
-                )
-
+            val listWeather =  repositoryLocalImpl.getAllHistoryWeather()
+            liveData.postValue(AppState.SuccessDetails(listWeather))
         }.start()
+
     }
 
 }

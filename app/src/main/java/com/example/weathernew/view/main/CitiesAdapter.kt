@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weathernew.R
 import com.example.weathernew.model.Weather
 
-class MainFragmentAdapter(val listener: OnMyItemClickListener): RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {  // MainFragmentAdapter передаём экземпляр умеющий в себя принимать клики (val listener: OnMyItemClickListener)
+class CitiesAdapter(val listener: OnMyItemClickListener): RecyclerView.Adapter<CitiesAdapter.MainViewHolder>() {  // MainFragmentAdapter передаём экземпляр умеющий в себя принимать клики (val listener: OnMyItemClickListener)
 
     private var weatherData:List<Weather> = listOf()
 
@@ -18,12 +18,12 @@ class MainFragmentAdapter(val listener: OnMyItemClickListener): RecyclerView.Ada
     }
 //------------------------------------------------------------------------------------------------------------------------------------
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainFragmentAdapter.MainViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CitiesAdapter.MainViewHolder {
         return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.fragment_main_recycler_city_item,parent,false))    // группа контейнеров
     }
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-    override fun onBindViewHolder(holder: MainFragmentAdapter.MainViewHolder, position: Int) {          //  наполнение контейнеров новыми данными
+    override fun onBindViewHolder(holder: CitiesAdapter.MainViewHolder, position: Int) {          //  наполнение контейнеров новыми данными
         holder.bind(this.weatherData[position])
     }
 //--------------------------------------------------------------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize                                         // не забыть подключить в градл плагин (apply plugin: 'kotlin-android-extensions') это даёт возможность передать Weather через бандл
-data class Weather(val city:City = getDefaultCity(),val temperature:Int=8, val feelsLike:Int=4
+data class Weather(var city:City = getDefaultCity(),val temperature:Int=8, val feelsLike:Int=4
                    ,val icon:String= "skc_n"): Parcelable
 
 @Parcelize                                         // анотация @Parcelize указывает на то что обьект парсилизирован и его можно передать через бандл

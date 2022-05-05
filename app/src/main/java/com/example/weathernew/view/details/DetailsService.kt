@@ -2,6 +2,8 @@ package com.example.weathernew.view.details
 
 import android.app.IntentService
 import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weathernew.BuildConfig
 import com.example.weathernew.model.WeatherDTO
@@ -18,6 +20,7 @@ class DetailsService(name:String = ""): IntentService(name) {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onHandleIntent(intent: Intent?) {
         intent?.let {
 
@@ -28,6 +31,7 @@ class DetailsService(name:String = ""): IntentService(name) {
 
     }
 //-----------------------------------------------------------------------------------------------------------------------------------------------
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun loadWeather(lat:Double, lon:Double) {                          // запрос погоды с сервера
 
             try {
@@ -72,6 +76,7 @@ class DetailsService(name:String = ""): IntentService(name) {
     }
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private  fun  convertBufferToResult(bufferedReader: BufferedReader):String{     // конвертер, сбор данных в одну большую строку
         return bufferedReader.lines().collect(Collectors.joining("\n"))
     }

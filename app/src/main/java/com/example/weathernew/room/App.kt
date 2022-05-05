@@ -25,7 +25,7 @@ class App:Application() {
                     throw IllformedLocaleException("Всё очень плохо")
                 }else{
                     db = Room.databaseBuilder(appInstance!!.applicationContext,HistoryDatabase::class.java, DB_NAME)
-                        .allowMainThreadQueries()
+                       // .allowMainThreadQueries()
                         .build()
                 }
             }
