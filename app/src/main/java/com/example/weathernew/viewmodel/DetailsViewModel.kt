@@ -29,7 +29,10 @@ class DetailsViewModel(
 
     @RequiresApi(Build.VERSION_CODES.P)
     fun saveWeather(weather: Weather){
-        repositoryLocalImpl.saveWeather(weather)
+        Thread{
+            repositoryLocalImpl.saveWeather(weather)
+        }.start()
+
     }
 
 
@@ -43,7 +46,7 @@ class DetailsViewModel(
 
     private val callback =  object : Callback <WeatherDTO>{
         override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
-            liveData.postValue(AppState.Error(R.string.errorCode,418))
+            liveData.postValue(AppState.Error(R.string.errorCode))
         }
 
         override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
@@ -57,7 +60,7 @@ class DetailsViewModel(
                 }
 
             }else{
-                liveData.postValue(AppState.Error(R.string.errorCode,response.code()))
+                liveData.postValue(AppState.Error(R.string.errorCode))
             }
 
         }

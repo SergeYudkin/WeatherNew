@@ -43,7 +43,7 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
         with(binding){
             when(appState){
                 is AppState.Error -> {
-                    appState.e
+
                 }
                 is AppState.Loading ->{
                     appState.progress

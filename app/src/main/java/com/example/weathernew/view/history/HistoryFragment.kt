@@ -61,10 +61,14 @@ private var _binding : FragmentHistoryBinding? = null     // привязыва�
         with(binding){
             when(appState){
                 is AppState.Error -> {
-                    //TODO HW
+                    appState.error
                 }
-                is AppState.Loading -> {}
-                is AppState.SuccessCity -> {}
+                is AppState.Loading -> {
+                   appState.progress
+                }
+                is AppState.SuccessCity -> {
+                    adapter.setWeather(appState.weatherData)
+                }
                 is AppState.SuccessDetails -> {
                     adapter.setWeather(appState.weatherData)
                 }

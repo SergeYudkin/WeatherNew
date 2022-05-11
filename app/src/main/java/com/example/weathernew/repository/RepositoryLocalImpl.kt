@@ -22,27 +22,28 @@ class RepositoryLocalImpl: RepositoryCitiesList,RepositoryHistoryWeather {
         return converterHistoryWeatherEntityToWeather (App.getHistoryWeatherDao().getAllHistoryWeather())
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
+    override fun saveWeather(weather: Weather) {
+        App.getHistoryWeatherDao().insert(converterWeatherToHistoryWeatherEntity(weather))
+
+    }
+
+
     private fun converterHistoryWeatherEntityToWeather(entityList: List<HistoryWeatherEntity>): List<Weather>{
         return entityList.map{
             Weather(City(it.city,0.0,0.0),it.temperature,
                 it.feelsLike,it.icon) }
     }
 
-    @RequiresApi(Build.VERSION_CODES.P)
-    override fun saveWeather(weather: Weather) {
-        converterWeatherToHistoryWeatherEntity(weather)
-    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.P)
-    private fun converterWeatherToHistoryWeatherEntity(weather: Weather) {
-        App.getHistoryWeatherDao().insert(
+    private fun converterWeatherToHistoryWeatherEntity(weather: Weather) =
             HistoryWeatherEntity(
                 0, weather.city.name,
                 weather.temperature, weather.feelsLike, weather.icon
             )
-        )
-    }
-
 
 }
 
