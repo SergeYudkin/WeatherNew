@@ -72,57 +72,8 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-       // getSharedPreferences(KEY_SP,Context.MODE_PRIVATE).also { isRussian = true }
-          //  .getBoolean(KEY_CURRENT_CITIES,true)
-
-
-      //  fab()
-
-      /*  fun  fab(){
-            var nameFAB: FloatingActionButton? = mainFragmentFAB
-            var noNullFAB:FloatingActionButton
-            var nullFAB:FloatingActionButton?
-
-            if (nameFAB !=null) {
-                noNullFAB = nameFAB
-
-            }else{
-                    nullFAB  = nameFAB
-                }
-
-        }*/
-
-
-
-        /*    pref = getSharedPreferences(KEY_SP,Context.MODE_PRIVATE)
-        binding .mainFragmentFAB.setImageResource(pref.getBoolean(KEY_CURRENT_CITIES,true))
-        mainFragmentFAB.setOnClickListener{
-            binding .mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        }
-        pref.edit()
-            .putBoolean(KEY_SP,true)
-            .putBoolean(KEY_SP,false)
-            .apply()*/
-
-        //isRussian = getSharedPreferences.getBoolean(KEY_SP,Context.MODE_PRIVATE)
-
     }
 
-   /* private fun  fab(){
-        mainFragmentFAB?.let {
-            pref = getSharedPreferences(KEY_SP,Context.MODE_PRIVATE)
-          when(isRussian){
-              is
-          }
-
-
-            val editor = pref.edit()
-                editor.putBoolean(KEY_CURRENT_CITIES,true)
-                editor.putBoolean(KEY_CURRENT_CITIES,false)
-                editor.apply()
-
-        }
-    }*/
 
 
 

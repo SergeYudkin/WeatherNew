@@ -14,13 +14,16 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.Weather
+import com.example.weathernew.model.getRussianCities
 import com.example.weathernew.utils.BUNDLE_KEY
+import com.example.weathernew.utils.KEY_CURRENT_CITIES
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.example.weathernew.utils.KEY_SP
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.android.synthetic.main.fragment_main.*
 
 var isRussian = true
 
@@ -28,7 +31,10 @@ class MainFragment : Fragment(),OnMyItemClickListener {      // привязал
 
 
     private lateinit var pref : SharedPreferences
-//------------------------------------------------------------------------------------
+
+
+
+    //------------------------------------------------------------------------------------
 private var _binding : FragmentMainBinding? = null     // привязываем макет
       private val binding : FragmentMainBinding     // binding не null
     get(){
@@ -42,6 +48,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     }
 
 //--------------------------------------------------------------------------------------
+
 
 
 
@@ -67,40 +74,54 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         viewModel.getWeatherFromLocalStorageRus()
 
 
-
-
     }
 
-    private fun initView() {
 
+
+    private fun initView() {
         with(binding){
             mainFragmentRecyclerView.adapter = adapter                 // к RecyclerView подключаем адаптер
             mainFragmentFAB.setOnClickListener {
+
                 sentRequest()
+
+
             }
 
         }
-            //isRussian = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
+
+        isRussian = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
+            .getBoolean("isRussian",true)
+                                                                                // чтение из SharedPreferences
+        if (isRussian) {
+            viewModel.getWeatherFromLocalStorageRus()
+            binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+
+
+
+        } else {
+            viewModel.getWeatherFromLocalStorageWorld()
+            binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
+        }
+
+
     }
 
-   /* fun fab (){
-        pref = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
-        binding.mainFragmentFAB.setImageResource(pref.getBoolean("currentCities",false))
-        binding.mainFragmentFAB.setOnClickListener{
-             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-            pref.edit()
-                .putBoolean("currentCities",false)
-                //.putBoolean("currentCities",false)
-                .apply()
-        }
-    }*/
+
 
     //-----------------------------------------------------------------------------------------------------
     private fun sentRequest() {
-    isRussian = !isRussian            // меняем на противоположное (если false то true, если true то false)
-        if (isRussian) {                                                // преключения между Российскими городами и миром
+    isRussian = !isRussian
+
+        val shPref = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
+        val editor = shPref.edit()                                                              // запись в SharedPreferences
+        editor.putBoolean("isRussian", isRussian)
+        editor.apply()
+
+        if (isRussian) {
             viewModel.getWeatherFromLocalStorageRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+
 
            
         } else {
@@ -109,6 +130,8 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         }
 
     }
+
+
 
 
 //----------------------------------------------------------------------------------------------
@@ -153,6 +176,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     ): View {
         _binding =  FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 //---------------------------------------------------------------------------------------------
     companion object {
@@ -175,6 +199,6 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 //-----------------------------------------------------------------------------------------------
 }
 
-private fun FloatingActionButton.setImageResource(boolean: Boolean) {
 
-}
+
+
