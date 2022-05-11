@@ -2,7 +2,6 @@ package com.example.weathernew.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.weathernew.model.City
 
 @Entity(tableName = "history_weather_entity")
 data class HistoryWeatherEntity(                                                                              // шаблон таблички

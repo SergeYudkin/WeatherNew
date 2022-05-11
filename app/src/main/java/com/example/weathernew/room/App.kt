@@ -25,7 +25,7 @@ class App:Application() {
                     throw IllformedLocaleException("Всё очень плохо")
                 }else{
                     db = Room.databaseBuilder(appInstance!!.applicationContext,HistoryDatabase::class.java, DB_NAME)
-                        .allowMainThreadQueries()
+                        .allowMainThreadQueries()   // по дз надо убрать, убираешь падает с ошибкой блокировки главного потока. Хотя в HistoryViewModel тело функции getAllHistory() обернули в поток
                         .build()
                 }
             }

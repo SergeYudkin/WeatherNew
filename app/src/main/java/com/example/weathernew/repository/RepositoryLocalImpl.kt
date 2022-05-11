@@ -2,21 +2,12 @@ package com.example.weathernew.repository
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.weathernew.BuildConfig
-import com.example.weathernew.model.*
+import com.example.weathernew.model.City
+import com.example.weathernew.model.Weather
+import com.example.weathernew.model.getRussianCities
+import com.example.weathernew.model.getWorldCities
 import com.example.weathernew.room.App
 import com.example.weathernew.room.HistoryWeatherEntity
-import com.example.weathernew.utils.API_KEY
-import com.example.weathernew.utils.YANDEX_API_URL
-import com.example.weathernew.utils.YANDEX_API_URL_END_POINT
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import retrofit2.Callback
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-
-import java.io.IOException
 
 class RepositoryLocalImpl: RepositoryCitiesList,RepositoryHistoryWeather {
 

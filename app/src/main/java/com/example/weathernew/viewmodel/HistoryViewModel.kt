@@ -5,8 +5,6 @@ import androidx.annotation.RequiresApi
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weathernew.repository.RepositoryLocalImpl
-import com.example.weathernew.repository.RepositoryRemoteImpl
-import java.lang.Thread.sleep
 
 class HistoryViewModel(
     private val liveData:MutableLiveData<AppState> = MutableLiveData(),
@@ -29,7 +27,7 @@ LifecycleOwner. Это позволяет не обновлять данные �
 
     @RequiresApi(Build.VERSION_CODES.P)
     fun getAllHistory(){
-       // liveData.postValue(AppState.Loading(0))
+        //liveData.postValue(AppState.Loading(0))
 
         Thread{
             val listWeather =  repositoryLocalImpl.getAllHistoryWeather()

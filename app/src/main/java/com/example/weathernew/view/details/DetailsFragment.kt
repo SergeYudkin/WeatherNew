@@ -13,22 +13,13 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
-import com.bumptech.glide.Glide
-import com.example.weathernew.BuildConfig
-import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.model.Weather
-import com.example.weathernew.model.WeatherDTO
 import com.example.weathernew.utils.*
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.DetailsViewModel
-import com.example.weathernew.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
 import okhttp3.*
-import java.io.IOException
 
 
 class DetailsFragment : Fragment(){

@@ -1,42 +1,22 @@
 package com.example.weathernew.view
 
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager.getDefaultSharedPreferences
-import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weathernew.R
-import com.example.weathernew.R.drawable.*
 import com.example.weathernew.databinding.ActivityMainBinding
 import com.example.weathernew.lessons.MyBroadcastReceiver
 import com.example.weathernew.lessons.ThreadsFragment
 import com.example.weathernew.model.WeatherDTO
-import com.example.weathernew.room.App
 import com.example.weathernew.utils.BUNDLE_KEY
 import com.example.weathernew.utils.BUNDLE_KEY_WEATHER
-import com.example.weathernew.utils.KEY_CURRENT_CITIES
-import com.example.weathernew.utils.KEY_SP
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.view.history.HistoryFragment
 import com.example.weathernew.view.main.MainFragment
-import com.example.weathernew.view.main.isRussian
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
-import kotlinx.android.synthetic.main.fragment_main.view.mainFragmentFAB
-
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     private val receiver =  MyBroadcastReceiver()
 
-    private lateinit var pref : SharedPreferences
 
 
 
@@ -106,6 +85,4 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private fun ImageView.setImageResource(boolean: Boolean) {
 
-}

@@ -3,7 +3,6 @@ package com.example.weathernew.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weathernew.repository.RepositoryLocalImpl
-import com.example.weathernew.repository.RepositoryRemoteImpl
 import java.lang.Thread.sleep
 
 class MainViewModel(

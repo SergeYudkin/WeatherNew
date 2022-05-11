@@ -9,17 +9,11 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentHistoryBinding
 import com.example.weathernew.model.Weather
-import com.example.weathernew.utils.BUNDLE_KEY
-import com.example.weathernew.view.details.DetailsFragment
-import com.example.weathernew.view.main.CitiesAdapter
 import com.example.weathernew.view.main.OnMyItemClickListener
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.HistoryViewModel
-import com.example.weathernew.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 
 class HistoryFragment : Fragment(), OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
 

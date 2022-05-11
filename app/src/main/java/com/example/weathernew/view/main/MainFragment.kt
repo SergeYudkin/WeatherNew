@@ -3,27 +3,20 @@ package com.example.weathernew.view.main
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresOptIn
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.Weather
-import com.example.weathernew.model.getRussianCities
 import com.example.weathernew.utils.BUNDLE_KEY
-import com.example.weathernew.utils.KEY_CURRENT_CITIES
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.example.weathernew.utils.KEY_SP
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.fragment_main.*
 
 var isRussian = true
 

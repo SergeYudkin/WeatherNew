@@ -39,9 +39,6 @@ class DetailsViewModel(
        repositoryRemoteImpl.getWeatherFromServer(lat, lon,callback)
     }
 
-   /* fun converterDTOtoModel(weatherDTO: WeatherDTO):List<Weather>{
-        return listOf(Weather(getDefaultCity(),weatherDTO.fact.temp.toInt(),weatherDTO.fact.feelsLike.toInt(),weatherDTO.fact.icon))
-    }*/
 
 
     private val callback =  object : Callback <WeatherDTO>{

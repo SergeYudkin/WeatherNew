@@ -1,7 +1,6 @@
 package com.example.weathernew.viewmodel
 
 import com.example.weathernew.model.Weather
-import com.example.weathernew.model.WeatherDTO
 
 
 sealed class AppState {
