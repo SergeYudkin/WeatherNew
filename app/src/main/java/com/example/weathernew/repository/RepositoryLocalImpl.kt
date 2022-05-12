@@ -31,7 +31,7 @@ class RepositoryLocalImpl: RepositoryCitiesList,RepositoryHistoryWeather {
 
     private fun converterHistoryWeatherEntityToWeather(entityList: List<HistoryWeatherEntity>): List<Weather>{
         return entityList.map{
-            Weather(City(it.city,0.0,0.0),it.temperature,
+            Weather(City(it.name,0.0,0.0),it.temperature,
                 it.feelsLike,it.icon) }
     }
 

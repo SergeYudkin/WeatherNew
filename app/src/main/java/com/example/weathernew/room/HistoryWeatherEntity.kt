@@ -5,5 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "history_weather_entity")
 data class HistoryWeatherEntity(                                                                              // шаблон таблички
-    @PrimaryKey(autoGenerate = true) val id:Long, val city: String,val temperature:Int, val feelsLike:Int, val icon:String)
+    @PrimaryKey(autoGenerate = true)
+    var id:Long=0,
+    var name: String="",
+    var temperature:Int=0,
+    var feelsLike:Int=0,
+    var icon:String="")
 

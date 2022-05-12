@@ -36,6 +36,12 @@
         <service android:name=".view.details.DetailsService"
             android:exported="true"/>
 
+        <provider
+            android:authorities="@string/authorities"
+            android:name=".lessons.EducationContentProvider"
+            android:enabled = "true"
+            android:exported = "true"/>
+
     </application>
 
 </manifest>
