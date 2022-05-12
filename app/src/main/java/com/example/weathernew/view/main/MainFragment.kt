@@ -23,8 +23,6 @@ var isRussian = true
 class MainFragment : Fragment(),OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
 
 
-    private lateinit var pref : SharedPreferences
-
 
 
     //------------------------------------------------------------------------------------

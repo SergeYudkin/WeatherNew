@@ -9,6 +9,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weathernew.R
 import com.example.weathernew.databinding.ActivityMainBinding
+import com.example.weathernew.databinding.FragmentContentProviderBinding
+import com.example.weathernew.lessons.ContentProviderFragment
 import com.example.weathernew.lessons.MyBroadcastReceiver
 import com.example.weathernew.lessons.ThreadsFragment
 import com.example.weathernew.model.WeatherDTO
@@ -53,11 +55,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-
-
-
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(receiver)
@@ -74,8 +71,14 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.beginTransaction()
                     .add(R.id.container, ThreadsFragment.newInstance()).addToBackStack("").commit()
                 true
-            } R.id.menu_history->{
-                    supportFragmentManager.beginTransaction().add(R.id.container, HistoryFragment.newInstance()).addToBackStack("").commit()
+            } R.id.menu_history-> {
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.container, HistoryFragment.newInstance()).addToBackStack("").commit()
+                true
+            }
+                R.id.menu_content->{
+                    supportFragmentManager.beginTransaction()
+                        .add(R.id.container, ContentProviderFragment.newInstance()).addToBackStack("").commit()
                     true
             }else->{
                 super.onOptionsItemSelected(item)
