@@ -14,3 +14,4 @@ const val YANDEX_API_URL_END_POINT = "v2/informers"
 const val DB_NAME = "History.db"
 const val KEY_SP = "sp"
 const val KEY_CURRENT_CITIES = "currentCities"
+const val REQUEST_CODE = 777
