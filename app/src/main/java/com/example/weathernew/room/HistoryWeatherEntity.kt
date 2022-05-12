@@ -10,5 +10,6 @@ data class HistoryWeatherEntity(                                                
     var name: String="",
     var temperature:Int=0,
     var feelsLike:Int=0,
-    var icon:String="")
+    var icon:String="",
+    var icon2:String="")
 

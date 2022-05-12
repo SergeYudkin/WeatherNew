@@ -5,6 +5,8 @@ import android.icu.util.IllformedLocaleException
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.weathernew.utils.DB_NAME
 
 class App:Application() {
@@ -26,6 +28,14 @@ class App:Application() {
                 }else{
                     db = Room.databaseBuilder(appInstance!!.applicationContext,HistoryDatabase::class.java, DB_NAME)
                        // .allowMainThreadQueries()
+//-----------------------------------------------------------------------------------------------------------------------------------------
+                        .addMigrations(object : Migration(1,2){                     // миграция с версии 1 на версию 2, в нашем случае добавилась колонка icon2
+                            override fun migrate(database: SupportSQLiteDatabase) {
+                                database.execSQL("ALTER TABLE history_weather_entity ADD COLUMN icon2 TEXT NOT NULL DEFAULT '' ")
+                            }
+                        })
+//--------------------------------------------------------------------------------------------------------------------------------------
+
                         .build()
                 }
             }

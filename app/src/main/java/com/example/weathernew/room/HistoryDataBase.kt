@@ -5,9 +5,11 @@ import androidx.room.RoomDatabase
 
 
 // этот класс должен быть абстрактным
-@Database(entities = [HistoryWeatherEntity::class], version = 1, exportSchema = false)     // таблицы передаются массивами
+@Database(entities = [HistoryWeatherEntity::class], version = 2, exportSchema = false)     // таблицы передаются массивами
 abstract class HistoryDatabase:RoomDatabase() {
 
     abstract fun historyWeatherDao():HistoryWeatherDao
+
+
 
 }
