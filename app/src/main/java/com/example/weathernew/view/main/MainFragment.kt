@@ -1,9 +1,12 @@
 package com.example.weathernew.view.main
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +19,9 @@ import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.Weather
 import com.example.weathernew.utils.BUNDLE_KEY
+import com.example.weathernew.utils.REQUEST_CODE_CALL
+import com.example.weathernew.utils.REQUEST_CODE_CONT
+import com.example.weathernew.utils.REQUEST_CODE_FINE_LOCATION
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
@@ -26,9 +32,6 @@ var isRussian = true
 class MainFragment : Fragment(),OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
 
 
-
-
-    //------------------------------------------------------------------------------------
 private var _binding : FragmentMainBinding? = null     // привязываем макет
       private val binding : FragmentMainBinding     // binding не null
     get(){
@@ -43,10 +46,6 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 
 //--------------------------------------------------------------------------------------
 
-
-
-
- //--------------------------------------------------------------------------------------
     override fun  onDestroy() {
         super.onDestroy()
         _binding = null
@@ -57,8 +56,6 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-
-
 //---------------------------------------------------------------------------------------
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {                                 // Observer записывает в renderData все изменения
@@ -67,47 +64,19 @@ private var _binding : FragmentMainBinding? = null     // привязываем
          viewModel.getLivaData().observe(viewLifecycleOwner, Observer <AppState> { renderData(it) })    // ViewModel автоматически воспринимает жизненный цикл и обрабатывает сохранение и восстановление данных
         viewModel.getWeatherFromLocalStorageRus()
 
-
     }
-
-
 
     private fun initView() {
         with(binding){
             mainFragmentRecyclerView.adapter = adapter                 // к RecyclerView подключаем адаптер
             mainFragmentFAB.setOnClickListener {
-
                 sentRequest()
-
-
+            }
+            mainFragmentFABLocation.setOnClickListener {
+                checkPermission()
             }
 
         }
-
-     /*   private fun checkPermission(){         //функция проверки и запроса разрешения
-
-            context?.let {
-                when{
-                    ContextCompat.checkSelfPermission(it, Manifest.permission.READ_CONTACTS)    // проверяем наличие разрешения
-                            == PackageManager.PERMISSION_GRANTED->{
-                        getLocation()
-                    }
-                    shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)->{    // выводим диалоговое окно с обьяснением, почему необходимо предоставить доступ,
-                        showDialog()                                                              // если да, то выводится системное диалоговое окно с запросом разрешения
-                        // если пользователь отклонил второй запрос на разоешение, запросов больше не будет, придётся переустанавливать приложение
-                    }else->{
-                    myRequestPermission()       //  выводим пользователю системное диалоговое окно запроса разрешения
-                }
-                }
-
-            }
-
-        }*/
-
-         fun getLocation(){
-
-        }
-
         isRussian = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
             .getBoolean("isRussian",true)
                                                                                 // чтение из SharedPreferences
@@ -115,14 +84,94 @@ private var _binding : FragmentMainBinding? = null     // привязываем
             viewModel.getWeatherFromLocalStorageRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
 
-
-
         } else {
             viewModel.getWeatherFromLocalStorageWorld()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         }
+    }
 
 
+    fun checkPermission(){         //функция проверки и запроса разрешения
+
+        context?.let {
+            when{
+                ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)    // проверяем наличие разрешения
+                        == PackageManager.PERMISSION_GRANTED->{
+                    getLocation()
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)->{    // выводим диалоговое окно с обьяснением, почему необходимо предоставить доступ,
+                    showDialog()                                                              // если да, то выводится системное диалоговое окно с запросом разрешения
+                                                                            // если пользователь отклонил второй запрос на разоешение, запросов больше не будет, придётся переустанавливать приложение
+                }else->{
+                myRequestPermission()                          //  выводим пользователю системное диалоговое окно запроса разрешения
+            }
+            }
+
+        }
+
+    }
+
+    private val locationListener = object : LocationListener{
+
+        override fun onLocationChanged(location: Location) {
+            TODO("Not yet implemented")
+        }
+
+        override fun onProviderDisabled(provider: String) {
+            super.onProviderDisabled(provider)
+        }
+
+        override fun onProviderEnabled(provider: String) {
+            super.onProviderEnabled(provider)
+        }
+
+    }
+
+
+    private fun getLocation(){
+
+
+    }
+
+    private fun myRequestPermission(){
+
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_FINE_LOCATION)    //Системный диалог запроса разрешения
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,                                       // обработка запросов и ответов
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        // super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_FINE_LOCATION){
+            when {
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> {       // если да, то getContacts()
+                    getLocation()
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {   // если нет, то наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
+                    showDialog()
+
+                }
+                else -> {
+                    // сюда попадаем в случае второго отказа в разрешении, это конец запросов больше не будет.
+                }
+            }
+
+        }
+    }
+
+    private fun showDialog(){
+        // наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
+        AlertDialog.Builder(requireContext())
+            .setTitle("Доступ к геолокации") //TODO HW вынести в ресурсы
+            .setMessage("Обьяснение")
+            .setPositiveButton("Предоставить доступ"){_,_->
+                myRequestPermission()
+            }
+            .setNegativeButton("Не стоит"){dialog,_->dialog.dismiss()}
+            .create()
+            .show()
     }
 
 
@@ -140,17 +189,12 @@ private var _binding : FragmentMainBinding? = null     // привязываем
             viewModel.getWeatherFromLocalStorageRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
 
-
-           
         } else {
             viewModel.getWeatherFromLocalStorageWorld()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         }
 
     }
-
-
-
 
 //----------------------------------------------------------------------------------------------
 
@@ -214,7 +258,6 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                 )).addToBackStack("").commit()
         }
     }
-//-----------------------------------------------------------------------------------------------
 }
 
 
