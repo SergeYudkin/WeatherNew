@@ -10,6 +10,8 @@
     <string name="again">Попробовать ещё раз.</string>
     <string name="errorCode">Error code</string>
     <string name="serverError">Server error</string>
+    <string name="end">Всё кина не будет!</string>
+    <string name="beginner">beginner</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="authorities">com.example.weathernew.EducationContentProvider</string>

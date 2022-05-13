@@ -2,7 +2,10 @@ package com.example.weathernew.lessons
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.ContentResolver
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
@@ -10,11 +13,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentContentProviderBinding
-import com.example.weathernew.databinding.FragmentMainBinding
-import com.example.weathernew.utils.REQUEST_CODE
+
+import com.example.weathernew.utils.REQUEST_CODE_CALL
+import com.example.weathernew.utils.REQUEST_CODE_CONT
+import com.google.android.material.snackbar.Snackbar
 
 
 class ContentProviderFragment : Fragment() {
@@ -28,6 +35,8 @@ class ContentProviderFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
     }
 
@@ -68,8 +77,10 @@ class ContentProviderFragment : Fragment() {
     private fun getContacts(){
 
         context?.let { it ->
-            val contentResolver = it.contentResolver
-            val cursor = contentResolver.query(
+
+            val contentResolver = it.contentResolver    // Получаем ContentResolver у контекста
+
+            val cursor = contentResolver.query(               // Отправляем запрос на получение контактов и получаем ответ в виде Cursor
                 ContactsContract.Contacts.CONTENT_URI,
                 null,
                 null,
@@ -82,7 +93,9 @@ class ContentProviderFragment : Fragment() {
                 for (i in 0 until  cursor.count){     // пробегаем курсором по всем строчкам
                     cursor.moveToPosition(i)
                     val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                    addView(name)
+                    val contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
+                    val number = getNumberFromID(contentResolver,contactId)
+                    addView(name, number)
                 }
             }
             cursor?.close()
@@ -91,13 +104,50 @@ class ContentProviderFragment : Fragment() {
 
     }
 
-    private fun addView(name: String){
+
+
+    private fun getNumberFromID(contentResolver: ContentResolver,contactId:String):String{
+        val phones = contentResolver.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null
+        )
+        var number: String = "none"
+        phones?.let { cursor ->
+            while (cursor.moveToNext()) {
+                number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+            }
+        }
+        return number
+
+    }
+
+
+
+    private fun addView(name: String,number:String){
 
         binding.containerForContacts.addView(TextView(requireContext()).apply {
-            text = name
-            textSize = 30f
+
+            text = "$name:$number"
+            textSize = 20f
+            setOnClickListener{
+                numberCurrent =  number
+                makeCall()
+            }
         })
 
+    }
+
+    private var numberCurrent: String = "none"
+    private fun makeCall() {
+        if(ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CALL_PHONE
+            ) == PackageManager.PERMISSION_GRANTED){
+            val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$numberCurrent"))
+            startActivity(intent)
+        }else{
+            requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL)
+        }
     }
 
     private fun showDialog(){
@@ -122,7 +172,7 @@ class ContentProviderFragment : Fragment() {
         grantResults: IntArray
     ) {
        // super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE){
+        if (requestCode == REQUEST_CODE_CONT){
             when{
                 (grantResults[0]==PackageManager.PERMISSION_GRANTED)->{       // если да, то getContacts()
                     getContacts()
@@ -131,7 +181,18 @@ class ContentProviderFragment : Fragment() {
                     showDialog()
 
                 }else->{
-                                                    // сюда попадаем в случае второго отказа в разрешении, это конец запросов больше не будет.
+                          // сюда попадаем в случае второго отказа в разрешении, это конец запросов больше не будет.
+                }
+            }
+        }else if(requestCode == REQUEST_CODE_CALL){
+            when{
+                (grantResults[0]== PackageManager.PERMISSION_GRANTED)->{
+                    makeCall()
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)->{
+                    showDialog()
+                }else->{
+                makeCall()
                 }
             }
         }
@@ -139,7 +200,7 @@ class ContentProviderFragment : Fragment() {
 
     private fun myRequestPermission(){
 
-        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),REQUEST_CODE)    //Системный диалог запроса разрешения
+        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_CONT)    //Системный диалог запроса разрешения
     }
 
     companion object {
@@ -149,4 +210,6 @@ class ContentProviderFragment : Fragment() {
 
 
     }
+
+
 }

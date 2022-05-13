@@ -1,11 +1,14 @@
 package com.example.weathernew.view.main
 
+import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -78,6 +81,30 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 
 
             }
+
+        }
+
+     /*   private fun checkPermission(){         //функция проверки и запроса разрешения
+
+            context?.let {
+                when{
+                    ContextCompat.checkSelfPermission(it, Manifest.permission.READ_CONTACTS)    // проверяем наличие разрешения
+                            == PackageManager.PERMISSION_GRANTED->{
+                        getLocation()
+                    }
+                    shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)->{    // выводим диалоговое окно с обьяснением, почему необходимо предоставить доступ,
+                        showDialog()                                                              // если да, то выводится системное диалоговое окно с запросом разрешения
+                        // если пользователь отклонил второй запрос на разоешение, запросов больше не будет, придётся переустанавливать приложение
+                    }else->{
+                    myRequestPermission()       //  выводим пользователю системное диалоговое окно запроса разрешения
+                }
+                }
+
+            }
+
+        }*/
+
+         fun getLocation(){
 
         }
 

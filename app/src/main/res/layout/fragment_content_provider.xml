@@ -14,5 +14,4 @@
         android:padding="@dimen/margin_15_dp"/>
 
 
-
 </ScrollView>
