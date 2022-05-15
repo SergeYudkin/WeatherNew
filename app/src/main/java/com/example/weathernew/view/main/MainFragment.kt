@@ -3,10 +3,11 @@ package com.example.weathernew.view.main
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +19,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.Weather
-import com.example.weathernew.utils.BUNDLE_KEY
-import com.example.weathernew.utils.REQUEST_CODE_CALL
-import com.example.weathernew.utils.REQUEST_CODE_CONT
-import com.example.weathernew.utils.REQUEST_CODE_FINE_LOCATION
+import com.example.weathernew.utils.*
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import org.xml.sax.Locator
 
 var isRussian = true
 
@@ -91,7 +90,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     }
 
 
-    fun checkPermission(){         //функция проверки и запроса разрешения
+    private fun checkPermission(){         //функция проверки и запроса разрешения
 
         context?.let {
             when{
@@ -100,7 +99,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                     getLocation()
                 }
                 shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)->{    // выводим диалоговое окно с обьяснением, почему необходимо предоставить доступ,
-                    showDialog()                                                              // если да, то выводится системное диалоговое окно с запросом разрешения
+                    showDialogRatio()                                                              // если да, то выводится системное диалоговое окно с запросом разрешения
                                                                             // если пользователь отклонил второй запрос на разоешение, запросов больше не будет, придётся переустанавливать приложение
                 }else->{
                 myRequestPermission()                          //  выводим пользователю системное диалоговое окно запроса разрешения
@@ -111,10 +110,22 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 
     }
 
+    private fun getAddress(location: Location){
+
+
+
+        Thread{
+            val geocoder = Geocoder(requireContext())
+           val listAddress =  geocoder.getFromLocation(location.latitude, location.longitude,1)
+        }.start()
+
+
+    }
+
     private val locationListener = object : LocationListener{
 
         override fun onLocationChanged(location: Location) {
-            TODO("Not yet implemented")
+            getAddress(location)
         }
 
         override fun onProviderDisabled(provider: String) {
@@ -130,6 +141,29 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 
     private fun getLocation(){
 
+        activity?.let {
+            if (ContextCompat.checkSelfPermission(it,Manifest.permission.ACCESS_FINE_LOCATION)
+            ==PackageManager.PERMISSION_GRANTED){
+                val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
+                    providerGPS?.let {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        REFRESH_PERIOD,
+                        MIN_DISTANCE,
+                        locationListener)
+                    }
+                }else{
+                    val lastLocation =  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    lastLocation?.let {
+                        getAddress(it)
+                    }
+            }
+            }
+        }
+    }
+
+    private fun showDialog(){
 
     }
 
@@ -150,7 +184,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                     getLocation()
                 }
                 shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {   // если нет, то наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
-                    showDialog()
+                    showDialogRatio()
 
                 }
                 else -> {
@@ -161,7 +195,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         }
     }
 
-    private fun showDialog(){
+    private fun showDialogRatio(){
         // наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
         AlertDialog.Builder(requireContext())
             .setTitle("Доступ к геолокации") //TODO HW вынести в ресурсы
