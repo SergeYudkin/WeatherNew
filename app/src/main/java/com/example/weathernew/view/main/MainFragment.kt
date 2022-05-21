@@ -4,10 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentMainBinding
+import com.example.weathernew.model.City
 import com.example.weathernew.model.Weather
 import com.example.weathernew.utils.*
 import com.example.weathernew.view.details.DetailsFragment
@@ -103,20 +101,34 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                                                                             // если пользователь отклонил второй запрос на разоешение, запросов больше не будет, придётся переустанавливать приложение
                 }else->{
                 myRequestPermission()                          //  выводим пользователю системное диалоговое окно запроса разрешения
-            }
+                }
             }
 
         }
 
     }
 
+    private fun showAddressDialog(address: String,location: Location){
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.dialog_address_title))
+            .setMessage(address)
+            .setPositiveButton(getString(R.string.dialog_address_get_weather)){_,_->
+                toDetails(Weather(City(address,location.latitude,location.longitude)))
+
+            }
+            .setNegativeButton(getString(R.string.no_accept)){dialog,_->dialog.dismiss()}
+            .create()
+            .show()
+
+    }
+
     private fun getAddress(location: Location){
-
-
 
         Thread{
             val geocoder = Geocoder(requireContext())
            val listAddress =  geocoder.getFromLocation(location.latitude, location.longitude,1)
+            requireActivity().runOnUiThread { showAddressDialog(listAddress[0].getAddressLine(0), location) }
         }.start()
 
 
@@ -145,6 +157,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
             if (ContextCompat.checkSelfPermission(it,Manifest.permission.ACCESS_FINE_LOCATION)
             ==PackageManager.PERMISSION_GRANTED){
                 val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                     val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
                     providerGPS?.let {
@@ -199,7 +212,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         // наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
         AlertDialog.Builder(requireContext())
             .setTitle("Доступ к геолокации") //TODO HW вынести в ресурсы
-            .setMessage("Обьяснение")
+            .setMessage(getString(R.string.dialog_message_no_gps))
             .setPositiveButton("Предоставить доступ"){_,_->
                 myRequestPermission()
             }
@@ -207,8 +220,6 @@ private var _binding : FragmentMainBinding? = null     // привязываем
             .create()
             .show()
     }
-
-
 
     //-----------------------------------------------------------------------------------------------------
     private fun sentRequest() {
@@ -260,7 +271,6 @@ private var _binding : FragmentMainBinding? = null     // привязываем
             }.show()
     }
 
-
     private fun View.showSnackBarWithoutAction(text:String,length:Int){
         Snackbar.make(this,text,length).show()
     }
@@ -283,11 +293,18 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     }
 
     override fun onItemClick(weather: Weather) {                // метод который нужно добавить (автоматически) при привязке OnMyItemClickListener
+        toDetails(weather)
+    }
+
+    private fun toDetails(weather: Weather) {
         activity?.run {
             supportFragmentManager.beginTransaction()
                 .add(R.id.container, DetailsFragment.newInstance(
                     Bundle().apply {
-                        putParcelable(BUNDLE_KEY, weather)                      // пакует данные в бандл
+                        putParcelable(
+                            BUNDLE_KEY,
+                            weather
+                        )                      // пакует данные в бандл
                     }
                 )).addToBackStack("").commit()
         }

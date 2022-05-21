@@ -27,7 +27,7 @@ class App:Application() {
                     throw IllformedLocaleException("Всё очень плохо")
                 }else{
                     db = Room.databaseBuilder(appInstance!!.applicationContext,HistoryDatabase::class.java, DB_NAME)
-                       // .allowMainThreadQueries()
+
 //-----------------------------------------------------------------------------------------------------------------------------------------
                         .addMigrations(object : Migration(1,2){                     // миграция с версии 1 на версию 2, в нашем случае добавилась колонка icon2
                             override fun migrate(database: SupportSQLiteDatabase) {
