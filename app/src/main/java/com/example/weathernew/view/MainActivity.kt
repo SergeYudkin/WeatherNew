@@ -11,6 +11,7 @@ import com.example.weathernew.R
 import com.example.weathernew.databinding.ActivityMainBinding
 import com.example.weathernew.databinding.FragmentContentProviderBinding
 import com.example.weathernew.lessons.ContentProviderFragment
+import com.example.weathernew.lessons.MapsFragment
 import com.example.weathernew.lessons.MyBroadcastReceiver
 import com.example.weathernew.lessons.ThreadsFragment
 import com.example.weathernew.model.WeatherDTO
@@ -19,6 +20,7 @@ import com.example.weathernew.utils.BUNDLE_KEY_WEATHER
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.view.history.HistoryFragment
 import com.example.weathernew.view.main.MainFragment
+import com.google.android.gms.maps.MapFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -78,10 +80,16 @@ class MainActivity : AppCompatActivity() {
                     .add(R.id.container, HistoryFragment.newInstance()).addToBackStack("").commit()
                 true
             }
-                R.id.menu_content->{
+                R.id.menu_content-> {
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.container, ContentProviderFragment.newInstance()).addToBackStack("").commit()
+                        .add(R.id.container, ContentProviderFragment.newInstance())
+                        .addToBackStack("").commit()
                     true
+                }
+                    R.id.menu_google_maps->{
+                        supportFragmentManager.beginTransaction()
+                            .add(R.id.container, MapsFragment()).addToBackStack("").commit()
+                        true
             }else->{
                 super.onOptionsItemSelected(item)
             }

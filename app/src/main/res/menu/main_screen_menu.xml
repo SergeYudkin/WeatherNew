@@ -17,6 +17,11 @@
     <item
         android:id="@+id/menu_content"
         android:title="Content"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/menu_google_maps"
+        android:icon="@android:drawable/ic_dialog_map"
         app:showAsAction="always"/>
 
 
