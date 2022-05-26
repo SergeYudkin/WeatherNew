@@ -24,3 +24,4 @@ const val NAME = "name"
 const val TEMPERATURE = "temperature"
 const val FEELS_LIKE = "feelsLike"
 const val ICON = "icon"
+

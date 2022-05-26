@@ -50,6 +50,7 @@ class MapsFragment : Fragment() {
 
         myLoc(googleMap)
 
+
         googleMap.uiSettings.isZoomControlsEnabled = true      // добавляем зум на карте
     }
 
