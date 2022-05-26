@@ -17,22 +17,22 @@
         android:id="@+id/mainFragmentFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/margin_mainFragmentFAB_icon"
         android:src="@drawable/ic_russia"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="56dp"
+        app:maxImageSize="@dimen/max_image_size_mainFragmentFAB_icon"
         app:tint="@null" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainFragmentFABLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/margin_mainFragmentFABLocation_icon"
         android:src="@android:drawable/ic_dialog_map"
         app:layout_constraintBottom_toTopOf="@id/mainFragmentFAB"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="56dp"
+        app:maxImageSize="@dimen/max_image_size_mainFragmentFABLocation_icon"
         app:tint="@null" />
 
     <FrameLayout

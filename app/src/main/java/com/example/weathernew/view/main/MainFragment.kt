@@ -62,7 +62,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         viewModel.getWeatherFromLocalStorageRus()
 
     }
-
+//----------------------------------------------------------------------------------------------------
     private fun initView() {
         with(binding){
             mainFragmentRecyclerView.adapter = adapter                 // к RecyclerView подключаем адаптер
@@ -70,9 +70,8 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                 sentRequest()
             }
             mainFragmentFABLocation.setOnClickListener {
-                checkPermission()
+                checkPermission()                                 // вызов функции проверки и запроса на геолокацию по нажатию кнопки
             }
-
         }
         isRussian = requireActivity().getSharedPreferences("sp",Context.MODE_PRIVATE)
             .getBoolean("isRussian",true)
@@ -86,9 +85,8 @@ private var _binding : FragmentMainBinding? = null     // привязываем
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         }
     }
-
-
-    private fun checkPermission(){         //функция проверки и запроса разрешения
+//----------------------------------------------------------------------------------------------------------------------
+    private fun checkPermission(){         //функция проверки и запроса разрешения на геолокацию
 
         context?.let {
             when{
@@ -96,61 +94,57 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                         == PackageManager.PERMISSION_GRANTED->{
                     getLocation()
                 }
-                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)->{    // выводим диалоговое окно с обьяснением, почему необходимо предоставить доступ,
-                    showDialogRatio()                                                              // если да, то выводится системное диалоговое окно с запросом разрешения
-                                                                            // если пользователь отклонил второй запрос на разоешение, запросов больше не будет, придётся переустанавливать приложение
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)->{
+                    showDialogRatio()    // вызываем наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
+
                 }else->{
-                myRequestPermission()                          //  выводим пользователю системное диалоговое окно запроса разрешения
+                myRequestPermission()
                 }
             }
-
         }
-
     }
-
+//---------------------------------------------------------------------------------------------------------------------------
     private fun showAddressDialog(address: String,location: Location){
 
-        AlertDialog.Builder(requireContext())
+        AlertDialog.Builder(requireContext())                                          // диалог с вопросом узнать ли погоду по этому адресу или нет
             .setTitle(getString(R.string.dialog_address_title))
             .setMessage(address)
             .setPositiveButton(getString(R.string.dialog_address_get_weather)){_,_->
                 toDetails(Weather(City(address,location.latitude,location.longitude)))
-
             }
-            .setNegativeButton(getString(R.string.no_accept)){dialog,_->dialog.dismiss()}
+            .setNegativeButton(getString(R.string.no_need)){dialog,_->dialog.dismiss()}
             .create()
             .show()
-
     }
-
+//--------------------------------------------------------------------------------------------------------------------------
     private fun getAddress(location: Location){
 
         Thread{
             val geocoder = Geocoder(requireContext())
-           val listAddress =  geocoder.getFromLocation(location.latitude, location.longitude,1)
-            requireActivity().runOnUiThread { showAddressDialog(listAddress[0].getAddressLine(0), location) }
+           val listAddress =  geocoder.getFromLocation(location.latitude, location.longitude,1)            // адреса рядом с нашими координатами в нашем случае это один адрес
+            requireActivity().runOnUiThread { showAddressDialog(listAddress[0].getAddressLine(0), location) }  // спрашиваем пользователя показать ли погоду по этому адресу
         }.start()
 
 
     }
-
-    private val locationListener = object : LocationListener{
+//------------------------------------------------------------------------------------------------------------------------
+    private val locationListener = object : LocationListener{    // лисенер который отслеживает передвижения
 
         override fun onLocationChanged(location: Location) {
             getAddress(location)
         }
 
-        override fun onProviderDisabled(provider: String) {
+        override fun onProviderDisabled(provider: String) {      // выключение gps модуля
             super.onProviderDisabled(provider)
         }
 
-        override fun onProviderEnabled(provider: String) {
+        override fun onProviderEnabled(provider: String) {   // включение gps модуля
             super.onProviderEnabled(provider)
         }
 
     }
 
-
+//---------------------------------------------------------------------------------------------------------------------------
     private fun getLocation(){
 
         activity?.let {
@@ -167,22 +161,18 @@ private var _binding : FragmentMainBinding? = null     // привязываем
                         locationListener)
                     }
                 }else{
-                    val lastLocation =  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    val lastLocation =  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)  // если gps не включён придут старые координаты
                     lastLocation?.let {
                         getAddress(it)
                     }
-            }
+               }
             }
         }
     }
-
-    private fun showDialog(){
-
-    }
-
+//--------------------------------------------------------------------------------------------------------------------------------
     private fun myRequestPermission(){
 
-        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_FINE_LOCATION)    //Системный диалог запроса разрешения
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_FINE_LOCATION)    //Системный диалог запроса разрешения на геолокацию
     }
 
     override fun onRequestPermissionsResult(
@@ -193,7 +183,7 @@ private var _binding : FragmentMainBinding? = null     // привязываем
         // super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_FINE_LOCATION){
             when {
-                (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> {       // если да, то getContacts()
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> {       //если да то разрешение на геолокацию
                     getLocation()
                 }
                 shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {   // если нет, то наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
@@ -201,22 +191,22 @@ private var _binding : FragmentMainBinding? = null     // привязываем
 
                 }
                 else -> {
-                    // сюда попадаем в случае второго отказа в разрешении, это конец запросов больше не будет.
+                      // сюда попадаем в случае второго отказа в разрешении, это конец запросов больше не будет.
                 }
             }
 
         }
     }
-
+//----------------------------------------------------------------------------------------------------------------
     private fun showDialogRatio(){
         // наше диалоговое окно с обьяснением, почему необходимо предоставить доступ
         AlertDialog.Builder(requireContext())
-            .setTitle("Доступ к геолокации") //TODO HW вынести в ресурсы
+            .setTitle(getString(R.string.dialog_rationale_title))
             .setMessage(getString(R.string.dialog_message_no_gps))
-            .setPositiveButton("Предоставить доступ"){_,_->
+            .setPositiveButton(getString(R.string.dialog_rationale_give_access)){_,_->
                 myRequestPermission()
             }
-            .setNegativeButton("Не стоит"){dialog,_->dialog.dismiss()}
+            .setNegativeButton(getString(R.string.no_need)){dialog,_->dialog.dismiss()}
             .create()
             .show()
     }

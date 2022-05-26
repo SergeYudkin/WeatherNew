@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_city_name">25sp</dimen>
+    <dimen name="margin_top_city_coordinates">5dp</dimen>
+    <dimen name="width_weather_icon">150dp</dimen>
+    <dimen name="height_weather_icon">150dp</dimen>
+    <dimen name="padding_temperature">10dp</dimen>
+    <dimen name="text_size_temperature">20sp</dimen>
+    <dimen name="padding_feels_like">10dp</dimen>
+    <dimen name="text_size_feels_like">20sp</dimen>
+    <dimen name="width_icon">35dp</dimen>
+    <dimen name="height_icon">35dp</dimen>
+    <dimen name="maxHeight_icon">35dp</dimen>
+    <dimen name="padding_city_name">10dp</dimen>
+    <dimen name="text_size_cityname">20sp</dimen>
+    <dimen name="margin_mainFragmentFAB_icon">15dp</dimen>
+    <dimen name="max_image_size_mainFragmentFAB_icon">56dp</dimen>
+    <dimen name="margin_mainFragmentFABLocation_icon">15dp</dimen>
+    <dimen name="max_image_size_mainFragmentFABLocation_icon">56dp</dimen>
+    <dimen name="padding_mainFragmentRecyclerItemTextView">10dp</dimen>
+    <dimen name="text_size_mainFragmentRecyclerItemTextView">20sp</dimen>
+</resources>

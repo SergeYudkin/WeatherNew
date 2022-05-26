@@ -10,7 +10,7 @@
         android:id="@+id/textAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Москва, Красная площадь 1" />
+        tools:text="@string/Red_square" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Москва, Красная площадь 1" />
+            android:text="@string/Red_square" />
 
         <Button
             android:id="@+id/buttonSearch"

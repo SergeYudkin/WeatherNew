@@ -29,6 +29,10 @@
     <string name="dialog_rationale_decline">Не надо</string>
     <string name="dialog_address_title">Ваш адрес</string>
     <string name="dialog_address_get_weather">Узнать погоду</string>
-    <string name="no_accept">Не стоит</string>
+    <string name="no_need">Не стоит</string>
+    <string name="Red_square">Москва, Красная площадь 1</string>
+    <string name="Moscow">Москва</string>
+    <string name="Moscow_coordinates">lt/ln: 55.755826, 37.617299900000035</string>
+    <string name="Volgograd">Волгоград</string>
 
 </resources>

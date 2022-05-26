@@ -1,5 +1,8 @@
 package com.example.weathernew.lessons
 
+import android.Manifest
+import android.content.pm.PackageManager
+
 import android.graphics.Color
 import android.location.Geocoder
 import android.location.Location
@@ -9,6 +12,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentGoogleMapsMainBinding
 import com.example.weathernew.databinding.FragmentMapsBinding
@@ -27,18 +33,14 @@ class MapsFragment : Fragment() {
         get() {
             return _binding!!
         }
-
+//-------------------------------------------------------------------------------------
     lateinit var map:GoogleMap
     private val markers = arrayListOf<Marker>()
 
-    private val callback = OnMapReadyCallback { googleMap ->
-
+    private val callback = OnMapReadyCallback { googleMap ->    //Интерфейс обратного вызова, когда карта готова к использованию
         map = googleMap
-
         val m = LatLng(54.0, 37.0)
-       // googleMap.addMarker(MarkerOptions().position(m).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(m))
-
         googleMap.setOnMapLongClickListener {
             getAddress(it)
             addMarker(it)
@@ -46,24 +48,37 @@ class MapsFragment : Fragment() {
 
         }
 
-        googleMap.isMyLocationEnabled = true  //todo проверить есть ли разрешение
-        googleMap.uiSettings.isZoomControlsEnabled = true
+        myLoc(googleMap)
+
+        googleMap.uiSettings.isZoomControlsEnabled = true      // добавляем зум на карте
     }
 
-    private fun drawLine(location: LatLng){
-        val last = markers.size
-        if (last>1){
-            map.addPolyline(PolylineOptions().add(markers[last-1].position,markers[last-2].position)
-                .color(Color.RED).width(5f))
+    private fun myLoc(googleMap: GoogleMap){                // определение своего местоположения на карте
+        activity?.let {
+            if (ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+            ) {
+                googleMap.isMyLocationEnabled = true
+
+            }
         }
     }
 
+//----------------------------------------------------------------------------------------------------------
+    private fun drawLine(location: LatLng){
+        val last = markers.size
+        if (last>1){
+            map.addPolyline(PolylineOptions().add(markers[last-1].position,markers[last-2].position)   // рисуем линию между маркерами
+                .color(Color.RED).width(5f))
+        }
+    }
+//---------------------------------------------------------------------------------------------------------------
     private fun addMarker(location: LatLng){
-        val marker = map.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(
+        val marker = map.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(   // добавить маркер
             R.drawable.ic_map_marker)))
         markers.add(marker!!)
     }
-
+//----------------------------------------------------------------------------------------------------------------
     private fun getAddress(location: LatLng){
 
         Thread{
@@ -73,9 +88,8 @@ class MapsFragment : Fragment() {
             }
         }.start()
 
-
     }
-
+//-----------------------------------------------------------------------------------------------------------
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,7 +98,7 @@ class MapsFragment : Fragment() {
         _binding = FragmentGoogleMapsMainBinding.inflate(inflater,container,false)
         return binding.root
     }
-
+//-------------------------------------------------------------------------------------------------------------
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
@@ -94,20 +108,19 @@ class MapsFragment : Fragment() {
             search()
         }
     }
-
+//--------------------------------------------------------------------------------------------------------------
     private fun search(){
 
         Thread{
-            val geocoder = Geocoder(requireContext())
+            val geocoder = Geocoder(requireContext())                                                           // поиск точки на карте по адресу
             val listAddress =  geocoder.getFromLocationName(binding.searchAddress.text.toString(),1)
             requireActivity().runOnUiThread {
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(listAddress[0].latitude,listAddress[0].longitude),
                 8f))
 
-                map.addMarker(MarkerOptions().position(LatLng(listAddress[0].latitude,listAddress[0].longitude)).title("")
+                map.addMarker(MarkerOptions().position(LatLng(listAddress[0].latitude,listAddress[0].longitude)).title("")   // устанавливаем булавку в точке на карте которую тскали
                     .icon(BitmapDescriptorFactory.fromResource(
                         R.drawable.ic_map_pin)))
-                //addMarker(LatLng(listAddress[0].latitude,listAddress[0].longitude))
             }
         }.start()
     }
