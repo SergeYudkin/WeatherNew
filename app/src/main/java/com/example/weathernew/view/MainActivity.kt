@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         notificationManager.createNotificationChannel(channel_2)
+       // notificationManager.deleteNotificationChannel(CHANNEL_ID_2)
 
         notificationManager.notify(NOTIFICATION_ID_2,notificationBuilder_2.build())
         notificationManager.notify(NOTIFICATION_ID_2+1,notificationBuilder_2.build())
