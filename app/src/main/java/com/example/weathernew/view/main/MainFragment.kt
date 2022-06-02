@@ -14,10 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
+import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.City
 import com.example.weathernew.model.Weather
 import com.example.weathernew.utils.*
+import com.example.weathernew.view.BaseFragment
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
@@ -26,27 +28,12 @@ import org.xml.sax.Locator
 
 var isRussian = true
 
-class MainFragment : Fragment(),OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
-
-
-private var _binding : FragmentMainBinding? = null     // привязываем макет
-      private val binding : FragmentMainBinding     // binding не null
-    get(){
-        return _binding!!
-    }
-//-------------------------------------------------------------------------------------
-
+class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding:: inflate),OnMyItemClickListener {
 
     private val adapter: CitiesAdapter by lazy {          // вызвали адаптер
         CitiesAdapter(this)
     }
 
-//--------------------------------------------------------------------------------------
-
-    override fun  onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
 //--------------------------------------------------------------------------------------
 
     private  val viewModel : MainViewModel by lazy {                        //  ссылка на  MainViewModel
@@ -264,21 +251,10 @@ private var _binding : FragmentMainBinding? = null     // привязываем
     private fun View.showSnackBarWithoutAction(text:String,length:Int){
         Snackbar.make(this,text,length).show()
     }
-//-----------------------------------------------------------------------------------------
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =  FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-
-    }
 //---------------------------------------------------------------------------------------------
     companion object {
 
         fun newInstance() = MainFragment()       //  фабричный метод
-
 
     }
 

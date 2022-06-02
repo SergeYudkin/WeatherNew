@@ -17,8 +17,10 @@ import androidx.core.content.ContextCompat
 
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentGoogleMapsMainBinding
+import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.databinding.FragmentMapsBinding
 import com.example.weathernew.databinding.FragmentThreadsBinding
+import com.example.weathernew.view.BaseFragment
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -26,14 +28,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 
-class MapsFragment : Fragment() {
+class MapsFragment : BaseFragment<FragmentGoogleMapsMainBinding>(FragmentGoogleMapsMainBinding:: inflate) {
 
-    private var _binding: FragmentGoogleMapsMainBinding? = null
-    private val binding: FragmentGoogleMapsMainBinding
-        get() {
-            return _binding!!
-        }
-//-------------------------------------------------------------------------------------
+
     lateinit var map:GoogleMap
     private val markers = arrayListOf<Marker>()
 
@@ -91,15 +88,7 @@ class MapsFragment : Fragment() {
 
     }
 //-----------------------------------------------------------------------------------------------------------
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentGoogleMapsMainBinding.inflate(inflater,container,false)
-        return binding.root
-    }
-//-------------------------------------------------------------------------------------------------------------
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?

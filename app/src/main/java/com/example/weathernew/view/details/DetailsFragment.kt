@@ -16,20 +16,15 @@ import coil.request.ImageRequest
 import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.model.Weather
 import com.example.weathernew.utils.*
+import com.example.weathernew.view.BaseFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.DetailsViewModel
 import kotlinx.android.synthetic.main.fragment_details.*
 import okhttp3.*
 
 
-class DetailsFragment : Fragment(){
+class DetailsFragment : BaseFragment<FragmentDetailsBinding>(FragmentDetailsBinding:: inflate){
 
-//------------------------------------------------------------------------------------
-private var _binding : FragmentDetailsBinding? = null    // привязываем макет
-      private val binding : FragmentDetailsBinding     // binding не null
-    get(){
-        return _binding!!
-    }
 //-------------------------------------------------------------------------------------------
 
 
@@ -121,16 +116,6 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
         imageLoader.enqueue(request)
     }
 
-//-----------------------------------------------------------------------------------------
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding =  FragmentDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
 //---------------------------------------------------------------------------------------------
     companion object {
 
@@ -138,13 +123,6 @@ private var _binding : FragmentDetailsBinding? = null    // привязывае
                                                                                     // получает данные в бандле из метода onItemClick находящегося в MainFragment и вытаскивает их из бандла
             arguments = bundle
         }
-
-    }
-//---------------------------------------------------------------------------------------------------
-
-    override fun  onDestroy() {
-        super.onDestroy()
-        _binding = null
 
     }
 

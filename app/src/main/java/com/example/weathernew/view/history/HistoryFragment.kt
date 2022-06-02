@@ -9,39 +9,27 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.databinding.FragmentHistoryBinding
 import com.example.weathernew.model.Weather
+import com.example.weathernew.view.BaseFragment
 import com.example.weathernew.view.main.OnMyItemClickListener
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.HistoryViewModel
 
-class HistoryFragment : Fragment(), OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
-
-//------------------------------------------------------------------------------------
-private var _binding : FragmentHistoryBinding? = null     // привязываем макет
-      private val binding : FragmentHistoryBinding     // binding не null
-    get(){
-        return _binding!!
-    }
-//-------------------------------------------------------------------------------------
+class HistoryFragment : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBinding:: inflate), OnMyItemClickListener {      // привязали интерфейс OnMyItemClickListener который даст MainFragment способность принимать клики и реагировать на метод onItemClick
 
 
     private val adapter: CitiesHistoryAdapter by lazy {          // вызвали адаптер
         CitiesHistoryAdapter(this)
     }
 
- //--------------------------------------------------------------------------------------
-    override fun  onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
+
 //--------------------------------------------------------------------------------------
 
     private  val viewModel : HistoryViewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
     }
-
-
 
 //---------------------------------------------------------------------------------------
 
@@ -77,20 +65,10 @@ private var _binding : FragmentHistoryBinding? = null     // привязыва�
     }
 
 
-//-----------------------------------------------------------------------------------------
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding =  FragmentHistoryBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 //---------------------------------------------------------------------------------------------
     companion object {
 
         fun newInstance() = HistoryFragment()       //  фабричный метод
-
 
     }
 

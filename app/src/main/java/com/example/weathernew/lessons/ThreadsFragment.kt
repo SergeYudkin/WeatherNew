@@ -11,10 +11,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.databinding.FragmentThreadsBinding
+import com.example.weathernew.view.BaseFragment
 
 
-class ThreadsFragment : Fragment() {
+class ThreadsFragment : BaseFragment<FragmentThreadsBinding>(FragmentThreadsBinding:: inflate) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -23,12 +25,6 @@ class ThreadsFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
     }
-
-    private var _binding: FragmentThreadsBinding? = null
-    private val binding: FragmentThreadsBinding
-        get() {
-            return _binding!!
-        }
 
     private val myThread = MyThread()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,14 +66,6 @@ class ThreadsFragment : Fragment() {
         super.onDestroy()
         //myThread.handler?.removeCallbacksAndMessages(null)
         //_binding = null
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentThreadsBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     companion object {

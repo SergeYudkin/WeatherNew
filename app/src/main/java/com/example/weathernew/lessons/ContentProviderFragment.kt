@@ -18,35 +18,21 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentContentProviderBinding
+import com.example.weathernew.databinding.FragmentMainBinding
 
 import com.example.weathernew.utils.REQUEST_CODE_CALL
 import com.example.weathernew.utils.REQUEST_CODE_CONT
+import com.example.weathernew.view.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 
 
-class ContentProviderFragment : Fragment() {
+class ContentProviderFragment : BaseFragment<FragmentContentProviderBinding>(FragmentContentProviderBinding:: inflate) {
 
-    private var _binding : FragmentContentProviderBinding? = null     // привязываем макет
-    private val binding : FragmentContentProviderBinding                 // binding не null
-        get(){
-            return _binding!!
-        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-
-        _binding =  FragmentContentProviderBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -105,7 +91,6 @@ class ContentProviderFragment : Fragment() {
     }
 
 
-
     private fun getNumberFromID(contentResolver: ContentResolver,contactId:String):String{
         val phones = contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -120,8 +105,6 @@ class ContentProviderFragment : Fragment() {
         return number
 
     }
-
-
 
     private fun addView(name: String,number:String){
 
@@ -161,9 +144,6 @@ class ContentProviderFragment : Fragment() {
             .setNegativeButton("Не стоит"){dialog,_->dialog.dismiss()}
             .create()
             .show()
-
-
-
     }
 
     override fun onRequestPermissionsResult(
