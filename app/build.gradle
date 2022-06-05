@@ -30,13 +30,25 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+   /* signinConfigs{
+         release{
+             Properties properties = new Properties()
+             properties.load(rootProject.file("password.properties").newDataInputStream())
+             def password = properties.getProperty("password")
+             storeFile file("C:\\Users\\Serge\\WeatherNew2022.jks")
+             storePassword = password
+             keyAlias '2022'
+             keyPassword = password
+         }
+
+     }*/
+
     buildTypes {
 
-        tttest {
 
-        }
         release {
-            minifyEnabled false
+          //  signinConfig signinConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

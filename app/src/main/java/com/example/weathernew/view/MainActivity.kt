@@ -1,26 +1,17 @@
 package com.example.weathernew.view
 
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
-import android.os.Build.VERSION.SDK_INT
-
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import com.example.weathernew.R
 import com.example.weathernew.databinding.ActivityMainBinding
-import com.example.weathernew.databinding.FragmentContentProviderBinding
 import com.example.weathernew.lessons.ContentProviderFragment
 import com.example.weathernew.lessons.MapsFragment
-import com.example.weathernew.lessons.MyBroadcastReceiver
 import com.example.weathernew.lessons.ThreadsFragment
 import com.example.weathernew.model.WeatherDTO
 import com.example.weathernew.utils.BUNDLE_KEY
@@ -28,7 +19,6 @@ import com.example.weathernew.utils.BUNDLE_KEY_WEATHER
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.view.history.HistoryFragment
 import com.example.weathernew.view.main.MainFragment
-import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 

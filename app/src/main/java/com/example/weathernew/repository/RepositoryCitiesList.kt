@@ -8,3 +8,5 @@ interface RepositoryCitiesList {
     fun getWeatherFromLocalStorageWorld(): List<Weather>
 
 }
+
+

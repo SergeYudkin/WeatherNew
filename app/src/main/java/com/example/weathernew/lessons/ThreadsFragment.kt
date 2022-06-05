@@ -6,12 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.databinding.FragmentThreadsBinding
 import com.example.weathernew.view.BaseFragment
 

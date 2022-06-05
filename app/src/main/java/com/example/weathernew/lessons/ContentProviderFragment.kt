@@ -1,6 +1,8 @@
 package com.example.weathernew.lessons
 
+
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.Intent
@@ -8,22 +10,14 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
-import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentContentProviderBinding
-import com.example.weathernew.databinding.FragmentMainBinding
-
 import com.example.weathernew.utils.REQUEST_CODE_CALL
 import com.example.weathernew.utils.REQUEST_CODE_CONT
 import com.example.weathernew.view.BaseFragment
-import com.google.android.material.snackbar.Snackbar
 
 
 class ContentProviderFragment : BaseFragment<FragmentContentProviderBinding>(FragmentContentProviderBinding:: inflate) {
@@ -60,6 +54,7 @@ class ContentProviderFragment : BaseFragment<FragmentContentProviderBinding>(Fra
 
     }
 
+    @SuppressLint("Range")
     private fun getContacts(){
 
         context?.let { it ->
@@ -91,7 +86,8 @@ class ContentProviderFragment : BaseFragment<FragmentContentProviderBinding>(Fra
     }
 
 
-    private fun getNumberFromID(contentResolver: ContentResolver,contactId:String):String{
+    @SuppressLint("Range")
+    private fun getNumberFromID(contentResolver: ContentResolver, contactId:String):String{
         val phones = contentResolver.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId, null, null
@@ -130,6 +126,8 @@ class ContentProviderFragment : BaseFragment<FragmentContentProviderBinding>(Fra
             startActivity(intent)
         }else{
             requestPermissions(arrayOf(Manifest.permission.CALL_PHONE), REQUEST_CODE_CALL)
+
+
         }
     }
 
@@ -172,15 +170,26 @@ class ContentProviderFragment : BaseFragment<FragmentContentProviderBinding>(Fra
                 shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)->{
                     showDialog()
                 }else->{
-                makeCall()
+                myRequestPermission()
                 }
             }
         }
     }
 
-    private fun myRequestPermission(){
+    private val launcher = registerForActivityResult(ActivityResultContracts.RequestPermission()){ it->
+        if (it){
+            getContacts()
+        }else{
 
-        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_CONT)    //Системный диалог запроса разрешения
+        }
+    }
+
+    private fun myRequestPermission() {
+
+        //requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE_CONT)    //Системный диалог запроса разрешения
+
+        launcher.launch(Manifest.permission.READ_CONTACTS)
+
     }
 
     companion object {
@@ -188,8 +197,6 @@ class ContentProviderFragment : BaseFragment<FragmentContentProviderBinding>(Fra
         @JvmStatic
         fun newInstance() = ContentProviderFragment()
 
-
     }
-
 
 }

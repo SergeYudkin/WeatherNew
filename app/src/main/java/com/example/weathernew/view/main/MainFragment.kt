@@ -4,27 +4,28 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.*
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weathernew.R
-import com.example.weathernew.databinding.FragmentDetailsBinding
 import com.example.weathernew.databinding.FragmentMainBinding
 import com.example.weathernew.model.City
 import com.example.weathernew.model.Weather
-import com.example.weathernew.utils.*
+import com.example.weathernew.utils.BUNDLE_KEY
+import com.example.weathernew.utils.MIN_DISTANCE
+import com.example.weathernew.utils.REFRESH_PERIOD
+import com.example.weathernew.utils.REQUEST_CODE_FINE_LOCATION
 import com.example.weathernew.view.BaseFragment
 import com.example.weathernew.view.details.DetailsFragment
 import com.example.weathernew.viewmodel.AppState
 import com.example.weathernew.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
-import org.xml.sax.Locator
 
 var isRussian = true
 

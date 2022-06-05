@@ -2,26 +2,14 @@ package com.example.weathernew.lessons
 
 import android.Manifest
 import android.content.pm.PackageManager
-
 import android.graphics.Color
 import android.location.Geocoder
-import android.location.Location
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
 import com.example.weathernew.R
 import com.example.weathernew.databinding.FragmentGoogleMapsMainBinding
-import com.example.weathernew.databinding.FragmentMainBinding
-import com.example.weathernew.databinding.FragmentMapsBinding
-import com.example.weathernew.databinding.FragmentThreadsBinding
 import com.example.weathernew.view.BaseFragment
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
