@@ -30,7 +30,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-   /* signinConfigs{
+  /*  signinConfigs{
          release{
              Properties properties = new Properties()
              properties.load(rootProject.file("password.properties").newDataInputStream())
@@ -47,7 +47,7 @@ android {
 
 
         release {
-          //  signinConfig signinConfigs.release
+           // signinConfig signinConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
